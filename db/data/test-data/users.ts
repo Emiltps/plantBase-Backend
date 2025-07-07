@@ -1,6 +1,6 @@
-import User from "../../types/user_type";
+import UserType from "../../types/user_type";
 
-const users: User[] = [
+const users: UserType[] = [
   {
     id: 1,
     username: "johndoe",

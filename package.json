@@ -19,6 +19,7 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
+    "@types/pg-format": "^1.0.5",
     "jest": "^30.0.4",
     "supertest": "^7.1.1"
   }

@@ -1,4 +1,4 @@
-export default interface CareSchedule {
+export default interface CareScheduleType {
   id: number;
   plant_id: number;
   task_type: string;

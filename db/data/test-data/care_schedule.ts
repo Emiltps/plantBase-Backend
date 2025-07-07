@@ -1,5 +1,5 @@
-import CareSchedule from "../../types/care_schedule";
-const careSchedule: CareSchedule[] = [
+import CareScheduleType from "../../types/care_schedule";
+const careSchedule: CareScheduleType[] = [
   {
     id: 1,
     plant_id: 1,
@@ -25,3 +25,5 @@ const careSchedule: CareSchedule[] = [
     created_at: "2025-07-01T12:00:00Z",
   },
 ];
+
+export default careSchedule;
