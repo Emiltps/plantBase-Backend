@@ -1,0 +1,25 @@
+{
+  "name": "plantbase-backend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "ts-node ./bin/www"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.10",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^17.0.1",
+    "express": "^4.21.2",
+    "morgan": "~1.9.1",
+    "pg": "^8.16.3",
+    "pg-format": "^1.0.4",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "jest": "^30.0.4",
+    "supertest": "^7.1.1"
+  }
+}
