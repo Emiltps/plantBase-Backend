@@ -1,6 +1,6 @@
-import PlantType from "../../types/plant_types_type";
+import PlantTypesType from "../../types/plant_types_type";
 
-const plantType: PlantType[] = [
+const plantType: PlantTypesType[] = [
   {
     id: 1,
     name: "Monstera Deliciosa",
