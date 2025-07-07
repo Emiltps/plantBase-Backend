@@ -1,5 +1,5 @@
 export default interface PlantTypesType {
-  id: number;
+  plant_type_id: number;
   name: string;
   image_url: string;
 }

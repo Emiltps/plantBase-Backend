@@ -1,7 +1,7 @@
 export default interface PlantType {
-  id: number;
-  owner_id: number;
-  type_id: number;
+  plant_id: number;
+  user_id: number;
+  plant_type_id: number;
   nickname: string;
   photo_url: string;
   profile_description: string;

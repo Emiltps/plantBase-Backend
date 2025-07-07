@@ -1,5 +1,5 @@
 export default interface CareTasksType {
-  id: number;
+  care_task_id: number;
   schedule_id: number;
   due_at: string;
   completed_at: string | null;

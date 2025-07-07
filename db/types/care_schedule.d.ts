@@ -1,5 +1,5 @@
 export default interface CareScheduleType {
-  id: number;
+  care_schedule_id: number;
   plant_id: number;
   task_type: string;
   interval_days: number;

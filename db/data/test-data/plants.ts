@@ -2,9 +2,9 @@ import PlantType from "../../types/plant_type";
 
 const plants: PlantType[] = [
   {
-    id: 1,
-    owner_id: 1,
-    type_id: 4,
+    plant_id: 1,
+    user_id: 1,
+    plant_type_id: 4,
     nickname: "Fernie",
     photo_url: "https://example.com/photos/fernie.jpg",
     profile_description: "A vibrant Boston fern thriving in the living room.",
@@ -14,9 +14,9 @@ const plants: PlantType[] = [
     died_at: "",
   },
   {
-    id: 2,
-    owner_id: 2,
-    type_id: 3,
+    plant_id: 2,
+    user_id: 2,
+    plant_type_id: 3,
     nickname: "Spike",
     photo_url: "https://example.com/photos/spike.jpg",
     profile_description: "A resilient cactus with minimal needs.",
@@ -26,9 +26,9 @@ const plants: PlantType[] = [
     died_at: "",
   },
   {
-    id: 3,
-    owner_id: 1,
-    type_id: 4,
+    plant_id: 3,
+    user_id: 1,
+    plant_type_id: 4,
     nickname: "Lily",
     photo_url: "https://example.com/photos/lily.jpg",
     profile_description: "Peace lily known for its elegant white blooms.",
