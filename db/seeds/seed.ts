@@ -56,4 +56,14 @@ const seed = async ({
     created_at TIMESTAMP DEFAULT NOW(),
     died_at TIMESTAMP DEFAULT NULL;
   )`);
+  await db.query(`
+    CREATE TYPE task_type AS ENUM (water, fertilise, prune,other)
+    CREATE TABLE care_schedule (
+    care_schedule_id SERIAL PRIMARY KEY NOT NULL,
+    plant_id INT REFERENCES plants(plant_id),
+    status task_type NOT NULL,
+    interval_days INT NOT NULL,
+    next_due TIMESTAMP NOT NULL<
+    created_at TIMESTAMP DEFAULT NOW(),
+    )`);
 };
