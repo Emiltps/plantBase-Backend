@@ -63,7 +63,16 @@ const seed = async ({
     plant_id INT REFERENCES plants(plant_id),
     status task_type NOT NULL,
     interval_days INT NOT NULL,
-    next_due TIMESTAMP NOT NULL<
+    next_due TIMESTAMP NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    )`);
+
+  await db.query(`
+    CREATE TABLE care_tasks (
+    care_tasks_id SERIAL PRIMARY KEY NOT NULL,
+    schedule_id REFERENCES care_schedule(care_schedule_id),
+    due_at TIMESTAMP NOT NULL,
+    completed_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT NOW(),
     )`);
 };
