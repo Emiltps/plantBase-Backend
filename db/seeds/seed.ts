@@ -1,10 +1,5 @@
 import db from "../connection";
 import format from "pg-format";
-import careTasksData from "../data/test-data/care_tasks";
-import plantTypeData from "../data/test-data/plant_types";
-import plantsData from "../data/test-data/plants";
-import usersData from "../data/test-data/users";
-import careScheduleData from "../data/test-data/care_schedule";
 
 import CareScheduleType from "../types/care_schedule";
 import PlantType from "../types/plant_type";
@@ -14,7 +9,7 @@ import CareTasksType from "../types/care_tasks_type";
 
 type seedData = {
   careTasksData: CareTasksType[];
-  plantTypeData: PlantTypesType[];
+  plantTypesData: PlantTypesType[];
   plantsData: PlantType[];
   usersData: UserType[];
   careScheduleData: CareScheduleType[];
@@ -22,7 +17,7 @@ type seedData = {
 
 const seed = async ({
   careTasksData,
-  plantTypeData,
+  plantTypesData,
   plantsData,
   usersData,
   careScheduleData,
@@ -40,7 +35,7 @@ const seed = async ({
     username VARCHAR(60) UNIQUE NOT NULL,
     email VARCHAR(200) UNIQUE NOT NULL,
     profile_image TEXT,
-    expo_push_token TEXT,
+    expo_push_token TEXT[],
     created_at TIMESTAMP DEFAULT NOW()
   )`);
 
@@ -93,7 +88,7 @@ const seed = async ({
         username,
         email,
         profile_image,
-        expo_push_token,
+        `{${expo_push_token.join(",")}}`,
         created_at,
       ]
     )
@@ -102,20 +97,12 @@ const seed = async ({
 
   const plantTypesInsertQueryStr = format(
     `INSERT INTO plant_types (name, image_url) VALUES %L RETURNING *;`,
-    plantTypeData.map(({ name, image_url }) => [name, image_url])
+    plantTypesData.map(({ name, image_url }) => [name, image_url])
   );
   await db.query(plantTypesInsertQueryStr);
 
   const plantsInsertQueryStr = format(
-    `INSERT INTO plants (user_id,
-    plant_type_id,
-    nickname,
-    photo_url,
-    profile_description,
-    notes,
-    status,
-    created_at,
-    died_at) VALUES %L RETURNING *;`,
+    `INSERT INTO plants (user_id, plant_type_id, nickname, photo_url, profile_description, notes, status, created_at, died_at) VALUES %L RETURNING *;`,
     plantsData.map(
       ({
         user_id,
