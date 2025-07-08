@@ -1,0 +1,5 @@
+DROP DATABASE IF EXISTS plantBase;
+CREATE DATABASE plantBase;
+
+DROP DATABASE IF EXISTS plantBase_test;
+CREATE DATABASE plantBase_test;

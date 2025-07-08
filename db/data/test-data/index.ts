@@ -1,5 +1,7 @@
-exports.users = require("./users");
-exports.plants = require("./plants");
-exports.plantType = require("./plant_types");
-exports.careTasks = require("./care_tasks");
-exports.CareSchedule = require("./care_schedule");
+import users from "./users";
+import plants from "./plants";
+import plantType from "./plant_types";
+import careTasks from "./care_tasks";
+import careSchedule from "./care_schedule";
+
+export default { users, plants, plantType, careTasks, careSchedule };
