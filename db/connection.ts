@@ -7,8 +7,6 @@ dotenv.config({ path: `${__dirname}/../.env.${ENV}` });
 
 const config: PoolConfig = {};
 
-console.log("DATA BASE >>", process.env.PGDATABASE);
-
 if (ENV === "production") {
   config.connectionString = process.env.DATABASE_URL;
   config.max = 10;

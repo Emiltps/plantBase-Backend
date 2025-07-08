@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "ts-node ./bin/www",
+    "start": "ts-node ./bin/www.ts",
     "setup-dbs": "psql -f ./db/setup-dbs.sql",
     "seed-dev": "ts-node ./db/seeds/run-seed.ts",
     "test": "jest --runInBand"

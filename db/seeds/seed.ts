@@ -1,10 +1,10 @@
 import db from "../connection";
 import format from "pg-format";
-import careTasks from "../data/test-data/care_tasks";
-import plantType from "../data/test-data/plant_types";
-import plants from "../data/test-data/plants";
-import users from "../data/test-data/users";
-import careSchedule from "../data/test-data/care_schedule";
+import careTasksData from "../data/test-data/care_tasks";
+import plantTypeData from "../data/test-data/plant_types";
+import plantsData from "../data/test-data/plants";
+import usersData from "../data/test-data/users";
+import careScheduleData from "../data/test-data/care_schedule";
 
 import CareScheduleType from "../types/care_schedule";
 import PlantType from "../types/plant_type";
@@ -13,19 +13,19 @@ import UserType from "../types/user_type";
 import CareTasksType from "../types/care_tasks_type";
 
 type seedData = {
-  careTasks: CareTasksType[];
-  plantType: PlantTypesType[];
-  plants: PlantType[];
-  users: UserType[];
-  careSchedule: CareScheduleType[];
+  careTasksData: CareTasksType[];
+  plantTypeData: PlantTypesType[];
+  plantsData: PlantType[];
+  usersData: UserType[];
+  careScheduleData: CareScheduleType[];
 };
 
 const seed = async ({
-  careTasks,
-  plantType,
-  plants,
-  users,
-  careSchedule,
+  careTasksData,
+  plantTypeData,
+  plantsData,
+  usersData,
+  careScheduleData,
 }: seedData) => {
   await db.query(`DROP TABLE IF EXISTS care_tasks`);
   await db.query(`DROP TABLE IF EXISTS care_schedule`);
@@ -72,7 +72,6 @@ const seed = async ({
   await db.query(`CREATE TABLE care_schedule (
     care_schedule_id SERIAL PRIMARY KEY,
     plant_id INT REFERENCES plants(plant_id),
-    status task_type NOT NULL,
     interval_days INT NOT NULL,
     next_due TIMESTAMP NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
@@ -86,6 +85,86 @@ const seed = async ({
     completed_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT NOW()
     )`);
+
+  const usersInsertQueryStr = format(
+    `INSERT INTO users (username, email, profile_image, expo_push_token, created_at) VALUES %L RETURNING *;`,
+    usersData.map(
+      ({ username, email, profile_image, expo_push_token, created_at }) => [
+        username,
+        email,
+        profile_image,
+        expo_push_token,
+        created_at,
+      ]
+    )
+  );
+  await db.query(usersInsertQueryStr);
+
+  const plantTypesInsertQueryStr = format(
+    `INSERT INTO plant_types (name, image_url) VALUES %L RETURNING *;`,
+    plantTypeData.map(({ name, image_url }) => [name, image_url])
+  );
+  await db.query(plantTypesInsertQueryStr);
+
+  const plantsInsertQueryStr = format(
+    `INSERT INTO plants (user_id,
+    plant_type_id,
+    nickname,
+    photo_url,
+    profile_description,
+    notes,
+    status,
+    created_at,
+    died_at) VALUES %L RETURNING *;`,
+    plantsData.map(
+      ({
+        user_id,
+        plant_type_id,
+        nickname,
+        photo_url,
+        profile_description,
+        notes,
+        status,
+        created_at,
+        died_at,
+      }) => [
+        user_id,
+        plant_type_id,
+        nickname,
+        photo_url,
+        profile_description,
+        notes,
+        status,
+        created_at,
+        died_at,
+      ]
+    )
+  );
+  await db.query(plantsInsertQueryStr);
+
+  const careScheduleInsertQueryStr = format(
+    `INSERT INTO care_schedule (plant_id, interval_days, next_due, created_at) VALUES %L RETURNING *;`,
+    careScheduleData.map(
+      ({ plant_id, interval_days, next_due, created_at }) => [
+        plant_id,
+        interval_days,
+        next_due,
+        created_at,
+      ]
+    )
+  );
+  await db.query(careScheduleInsertQueryStr);
+
+  const careTasksInsertQueryStr = format(
+    `INSERT INTO care_tasks (schedule_id, due_at, completed_at, created_at) VALUES %L RETURNING *;`,
+    careTasksData.map(({ schedule_id, due_at, completed_at, created_at }) => [
+      schedule_id,
+      due_at,
+      completed_at,
+      created_at,
+    ])
+  );
+  await db.query(careTasksInsertQueryStr);
 };
 
 export default seed;

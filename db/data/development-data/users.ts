@@ -1,6 +1,6 @@
 import UserType from "../../types/user_type";
 
-const users: UserType[] = [
+const usersData: UserType[] = [
   {
     user_id: 1,
     username: "johndoe",
@@ -43,4 +43,4 @@ const users: UserType[] = [
   },
 ];
 
-export default users;
+export default usersData;

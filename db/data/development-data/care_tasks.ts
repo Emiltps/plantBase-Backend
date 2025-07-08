@@ -1,6 +1,6 @@
 import CareTasksType from "../../types/care_tasks_type";
 
-const careTasks: CareTasksType[] = [
+const careTasksData: CareTasksType[] = [
   {
     care_task_id: 1,
     schedule_id: 101,
@@ -31,4 +31,4 @@ const careTasks: CareTasksType[] = [
   },
 ];
 
-export default careTasks;
+export default careTasksData;

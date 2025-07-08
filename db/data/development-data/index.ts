@@ -1,7 +1,13 @@
-import users from "./users";
-import plants from "./plants";
-import plantType from "./plant_types";
-import careTasks from "./care_tasks";
-import careSchedule from "./care_schedule";
+import usersData from "./users";
+import plantsData from "./plants";
+import plantTypesData from "./plant_types";
+import careTasksData from "./care_tasks";
+import careScheduleData from "./care_schedule";
 
-export default { users, plants, plantType, careTasks, careSchedule };
+export default {
+  usersData,
+  plantsData,
+  plantTypesData,
+  careTasksData,
+  careScheduleData,
+};

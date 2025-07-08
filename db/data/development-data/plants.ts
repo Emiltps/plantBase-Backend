@@ -1,6 +1,6 @@
 import PlantType from "../../types/plant_type";
 
-const plants: PlantType[] = [
+const plantsData: PlantType[] = [
   {
     plant_id: 1,
     user_id: 1,
@@ -39,4 +39,4 @@ const plants: PlantType[] = [
   },
 ];
 
-export default plants;
+export default plantsData;
