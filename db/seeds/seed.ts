@@ -87,3 +87,5 @@ const seed = async ({
     created_at TIMESTAMP DEFAULT NOW(),
     )`);
 };
+
+export default seed;

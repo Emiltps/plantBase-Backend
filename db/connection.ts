@@ -1,10 +1,11 @@
-const { Pool, PoolConfig } = require("pg");
+import { Pool, PoolConfig } from "pg";
+import dotenv from "dotenv";
 
 const ENV = process.env.NODE_ENV || "development";
 
-require("dotenv").config({ path: `${__dirname}/../.env.${ENV}` });
+dotenv.config({ path: `${__dirname}/../.env.${ENV}` });
 
-const config: typeof PoolConfig = {};
+const config: PoolConfig = {};
 
 if (ENV === "production") {
   config.connectionString = process.env.DATABASE_URL;
@@ -16,4 +17,5 @@ if (!process.env.PGDATABASE && !process.env.DATABASE_URL) {
 } else {
   console.log(`Connected to ${process.env.PGDATABASE}`);
 }
+
 export default new Pool(config);
