@@ -1,5 +1,6 @@
 import db from "../db/connection";
 import seed from "../db/seeds/seed";
+
 const data = require("../db/data/test-data/index");
 
 beforeAll(() => seed(data));
@@ -12,9 +13,10 @@ describe("seed", () => {
       const result = await (
         db.query as (query: string) => Promise<{ rows: ExistsRow[] }>
       )(`SELECT EXISTS (
-      SELECT FROM information_schema.tables 
+      SELECT 1 
+      FROM information_schema.tables 
       WHERE table_name = 'users'
-    );`);
+    )`);
       expect(result.rows[0].exists).toBe(true);
     });
   });
