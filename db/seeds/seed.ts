@@ -64,7 +64,7 @@ const seed = async ({
     notes TEXT,
     status plantstatus DEFAULT 'alive',
     created_at TIMESTAMP DEFAULT NOW(),
-    died_at TIMESTAMP DEFAULT NULL;
+    died_at TIMESTAMP DEFAULT NULL
   )`);
   await db.query(
     `CREATE TYPE task_type AS ENUM ('water', 'fertilise', 'prune', 'other')`
@@ -75,7 +75,7 @@ const seed = async ({
     status task_type NOT NULL,
     interval_days INT NOT NULL,
     next_due TIMESTAMP NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW(),
+    created_at TIMESTAMP DEFAULT NOW()
     )`);
 
   await db.query(`
@@ -84,7 +84,7 @@ const seed = async ({
     schedule_id INT   REFERENCES care_schedule(care_schedule_id),
     due_at TIMESTAMP NOT NULL,
     completed_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT NOW(),
+    created_at TIMESTAMP DEFAULT NOW()
     )`);
 };
 
