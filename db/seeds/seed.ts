@@ -27,6 +27,14 @@ const seed = async ({
   users,
   careSchedule,
 }: seedData) => {
+  await db.query(`DROP TABLE IF EXISTS care_tasks`);
+  await db.query(`DROP TABLE IF EXISTS care_schedule`);
+  await db.query(`DROP TABLE IF EXISTS plants`);
+  await db.query(`DROP TABLE IF EXISTS plant_types`);
+  await db.query(`DROP TABLE IF EXISTS users`);
+  await db.query(`DROP TYPE IF EXISTS task_type`);
+  await db.query(`DROP TYPE IF EXISTS plantstatus`);
+
   await db.query(`CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     username VARCHAR(60) UNIQUE NOT NULL,
@@ -38,28 +46,31 @@ const seed = async ({
 
   await db.query(`CREATE TABLE plant_types (
     plant_type_id SERIAL PRIMARY KEY,
-    name VARCHAR(100) UNIQUE NOT NULL
+    name VARCHAR(100) UNIQUE NOT NULL,
     image_url TEXT
   )`);
 
-  await db.query(`
-    CREATE TYPE plantstatus AS ENUM (alive, dead, infected)
-    CREATE TABLE plants (
-    plant_id SERIAL NOT NULL,
+  await db.query(
+    `CREATE TYPE plantstatus AS ENUM ('alive', 'dead', 'infected')`
+  );
+
+  await db.query(`CREATE TABLE plants (
+    plant_id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(user_id),
     plant_type_id INT REFERENCES plant_types(plant_type_id),
     nickname VARCHAR(100) NOT NULL,
     photo_url TEXT,
     profile_description TEXT,
     notes TEXT,
-    status plantstatus DEFAULT alive,
+    status plantstatus DEFAULT 'alive',
     created_at TIMESTAMP DEFAULT NOW(),
     died_at TIMESTAMP DEFAULT NULL;
   )`);
-  await db.query(`
-    CREATE TYPE task_type AS ENUM (water, fertilise, prune,other)
-    CREATE TABLE care_schedule (
-    care_schedule_id SERIAL PRIMARY KEY NOT NULL,
+  await db.query(
+    `CREATE TYPE task_type AS ENUM ('water', 'fertilise', 'prune', 'other')`
+  );
+  await db.query(`CREATE TABLE care_schedule (
+    care_schedule_id SERIAL PRIMARY KEY,
     plant_id INT REFERENCES plants(plant_id),
     status task_type NOT NULL,
     interval_days INT NOT NULL,
@@ -69,8 +80,8 @@ const seed = async ({
 
   await db.query(`
     CREATE TABLE care_tasks (
-    care_tasks_id SERIAL PRIMARY KEY NOT NULL,
-    schedule_id REFERENCES care_schedule(care_schedule_id),
+    care_tasks_id SERIAL PRIMARY KEY,
+    schedule_id INT   REFERENCES care_schedule(care_schedule_id),
     due_at TIMESTAMP NOT NULL,
     completed_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT NOW(),
