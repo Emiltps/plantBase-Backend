@@ -1,13 +1,402 @@
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PlantBase API</title>
+    <link rel="stylesheet" href="./stylesheets/style.css" />
+    <link rel="icon" href="./img/favicon.ico" type="image/x-icon" />
+  </head>
 
-<head>
-  <title>Express</title>
-  <link rel="stylesheet" href="/stylesheets/style.css">
-</head>
+  <body>
+    <main class="main">
+      <h2>API Routes for PlantBase</h2>
 
-<body>
-  <h1>Express</h1>
-  <p>Welcome to Express</p>
-</body>
+      <details>
+        <h3>GET /plants</h3>
+        <summary><span class="method get">GET</span> /plants</summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>
+            Retrieve an array of all plants belonging to the authenticated user.
+          </p>
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "plants": [
+    {
+      "id": "uuid",
+      "owner_id": "uuid",
+      "plant_type_id": "uuid",
+      "nickname": "My Fern",
+      "photo_url": "https://...",
+      "profile_description": "Loves shade",
+      "notes": "Keep soil moist",
+      "status": "ALIVE",
+      "created_at": "2025-07-09T12:00:00.000Z",
+      "died_at": null
+    }
+  ]
+}
+      </pre
+          >
+        </div>
+      </details>
 
+      <details>
+        <h3>GET /plants/:plant_id</h3>
+        <summary><span class="method get">GET</span> /plants/:plant_id</summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>Retrieve a single plant by its ID.</p>
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "plant": {
+    "id": "uuid",
+    "owner_id": "uuid",
+    "plant_type_id": "uuid",
+    "nickname": "My Fern",
+    "photo_url": "https://...",
+    "profile_description": "Loves shade",
+    "notes": "Keep soil moist",
+    "status": "ALIVE",
+    "created_at": "2025-07-09T12:00:00.000Z",
+    "died_at": null
+  }
+}
+      </pre
+          >
+        </div>
+      </details>
+
+      <details>
+        <h3>GET /plants/:plant_id/care_schedules/next_due</h3>
+        <summary>
+          <span class="method get">GET</span>
+          /plants/:plant_id/care_schedules/next_due
+        </summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>Retrieve the next due care schedule for a specific plant.</p>
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "nextDue": {
+    "schedule_id": "uuid",
+    "task_type": "WATER",
+    "next_due": "2025-07-10T09:00:00.000Z"
+  }
+}
+      </pre
+          >
+        </div>
+      </details>
+
+      <details>
+        <h3>POST /plants</h3>
+        <summary><span class="method post">POST</span> /plants</summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>Create a new plant for the authenticated user.</p>
+        </div>
+        <div class="sub-section">
+          <h4>Request Body</h4>
+          <pre>
+{
+  "plant_type_id": "uuid",
+  "nickname": "My Fern",
+  "photo_url": "https://...",
+  "profile_description": "Loves shade",
+  "notes": "Keep soil moist",
+  "status": "ALIVE",
+  "died_at": null
+}
+      </pre
+          >
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "plant": {
+    "id": "uuid",
+    "owner_id": "uuid",
+    "plant_type_id": "uuid",
+    "nickname": "My Fern",
+    "photo_url": "https://...",
+    "profile_description": "Loves shade",
+    "notes": "Keep soil moist",
+    "status": "ALIVE",
+    "created_at": "2025-07-09T12:00:00.000Z",
+    "died_at": null
+  }
+}
+      </pre
+          >
+        </div>
+      </details>
+
+      <details>
+        <h3>PATCH /plants/:plant_id</h3>
+        <summary>
+          <span class="method patch">PATCH</span> /plants/:plant_id
+        </summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>Update one or more fields of an existing plant.</p>
+        </div>
+        <div class="sub-section">
+          <h4>Request Body</h4>
+          <pre>
+{
+  "nickname": "New Nickname",
+  "notes": "Updated notes",
+  "status": "INFECTED"
+}
+      </pre
+          >
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "plant": {
+    "id": "uuid",
+    "owner_id": "uuid",
+    "plant_type_id": "uuid",
+    "nickname": "New Nickname",
+    "photo_url": "https://...",
+    "profile_description": "Loves shade",
+    "notes": "Updated notes",
+    "status": "INFECTED",
+    "created_at": "2025-07-09T12:00:00.000Z",
+    "died_at": null
+  }
+}
+      </pre
+          >
+        </div>
+      </details>
+
+      <details>
+        <h3>DELETE /plants/:plant_id</h3>
+        <summary>
+          <span class="method delete">DELETE</span> /plants/:plant_id
+        </summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>Delete a plant from the authenticated user’s collection.</p>
+        </div>
+      </details>
+
+      <details>
+        <h3>POST /plants/:plant_id/schedules</h3>
+        <summary>
+          <span class="method post">POST</span> /plants/:plant_id/schedules
+        </summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>Create a new care schedule for the specified plant.</p>
+        </div>
+        <div class="sub-section">
+          <h4>Request Body</h4>
+          <pre>
+{
+  "task_type": "WATER",
+  "interval_days": 7,
+  "next_due": "2025-07-10T09:00:00.000Z"
+}
+      </pre
+          >
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "schedule": {
+    "id": "uuid",
+    "plant_id": "uuid",
+    "task_type": "WATER",
+    "interval_days": 7,
+    "next_due": "2025-07-10T09:00:00.000Z",
+    "created_at": "2025-07-09T12:00:00.000Z"
+  }
+}
+      </pre
+          >
+        </div>
+      </details>
+
+      <details>
+        <h3>POST /auth/signup</h3>
+        <summary><span class="method post">POST</span> /auth/signup</summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>Register a new user account using Supabase Auth.</p>
+        </div>
+        <div class="sub-section">
+          <h4>Request Body</h4>
+          <pre>
+{
+  "email": "user@example.com",
+  "password": "Password123!",
+  "username": "newuser"
+}
+      </pre
+          >
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "user": {
+    "id": "uuid",
+    "email": "user@example.com",
+    "aud": "authenticated",
+    "role": "user",
+    "created_at": "2025-07-09T12:00:00.000Z"
+  }
+}
+      </pre
+          >
+        </div>
+      </details>
+
+      <details>
+        <h3>POST /auth/login</h3>
+        <summary><span class="method post">POST</span> /auth/login</summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>Authenticate a user and receive a JWT.</p>
+        </div>
+        <div class="sub-section">
+          <h4>Request Body</h4>
+          <pre>
+{
+  "email": "user@example.com",
+  "password": "Password123!"
+}
+      </pre
+          >
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "accessToken": "eyJhbGci…",
+  "user": {
+    "id": "uuid",
+    "email": "user@example.com",
+    "aud": "authenticated",
+    "role": "user",
+    "created_at": "2025-07-09T12:00:00.000Z"
+  }
+}
+      </pre
+          >
+        </div>
+      </details>
+
+      <details>
+        <h3>PATCH /schedules/:care_schedule_id</h3>
+        <summary>
+          <span class="method patch">PATCH</span>
+          /schedules/:care_schedule_id
+        </summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>Update fields of a care schedule.</p>
+        </div>
+        <div class="sub-section">
+          <h4>Request Body</h4>
+          <pre>
+{
+  "interval_days": 14,
+  "next_due": "2025-07-15T09:00:00.000Z"
+}
+      </pre
+          >
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "schedule": {
+    "id": "uuid",
+    "plant_id": "uuid",
+    "task_type": "WATER",
+    "interval_days": 14,
+    "next_due": "2025-07-15T09:00:00.000Z",
+    "created_at": "2025-07-09T12:00:00.000Z"
+  }
+}
+      </pre
+          >
+        </div>
+      </details>
+
+      <details>
+        <h3>DELETE /schedules/:care_schedule_id</h3>
+        <summary>
+          <span class="method delete">DELETE</span> /schedules/:care_schedule_id
+        </summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>Delete a care schedule by its ID.</p>
+        </div>
+      </details>
+
+      <details>
+        <h3>PATCH /care_tasks/:id/complete_at</h3>
+        <summary>
+          <span class="method patch">PATCH</span> /care_tasks/:id/complete_at
+        </summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>
+            Mark a care task as completed and advance its schedule’s next due
+            date.
+          </p>
+        </div>
+        <div class="sub-section">
+          <h4>Request Body</h4>
+          <pre>
+{
+  "completed_at": "2025-07-10T09:00:00.000Z"
+}
+      </pre
+          >
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "task": {
+    "id": "uuid",
+    "schedule_id": "uuid",
+    "due_at": "2025-07-10T09:00:00.000Z",
+    "completed_at": "2025-07-10T09:05:00.000Z",
+    "created_at": "2025-07-09T12:00:00.000Z"
+  },
+  "schedule": {
+    "id": "uuid",
+    "plant_id": "uuid",
+    "task_type": "WATER",
+    "interval_days": 7,
+    "next_due": "2025-07-17T09:00:00.000Z",
+    "created_at": "2025-07-09T12:00:00.000Z"
+  }
+}
+      </pre
+          >
+        </div>
+      </details>
+    </main>
+  </body>
 </html>
