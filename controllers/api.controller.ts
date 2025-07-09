@@ -4,6 +4,8 @@ import {
   fetchPlantById,
   fetchNextDueByPlantId,
   insertPlant,
+  removePlant,
+  updatePlantById,
 } from "../models/api.models";
 import { Request, Response, NextFunction } from "express";
 
@@ -76,6 +78,32 @@ export const postPlant = (req: Request, res: Response, next: NextFunction) => {
   })
     .then(({ newPlant }) => {
       res.status(201).json({ plant: newPlant });
+    })
+    .catch(next);
+};
+
+// DELETE /plants/:plant_id
+export const deletePlantByPlantId = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { plant_id } = req.params;
+  removePlant(Number(plant_id))
+    .then((plant) => {
+      res.status(204).send();
+    })
+    .catch(next);
+};
+
+// PATCH /plants/:plant_id
+export const patchPlant = (req: Request, res: Response, next: NextFunction) => {
+  const plant_id = req.params;
+  const updateData = req.body;
+
+  updatePlantById(Number(plant_id), updateData)
+    .then((updatedPlant) => {
+      res.status(200).json({ plant: updatedPlant });
     })
     .catch(next);
 };

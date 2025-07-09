@@ -114,4 +114,55 @@ export const insertPlant = (plantData: PlantType) => {
     .then(({ rows }) => rows[0]);
 };
 
-// DELETE
+// DELETE /plants/:plant_id
+export const removePlant = (plant_id: number) => {
+  if (isNaN(plant_id)) {
+    return Promise.reject({ status: 400, msg: "Invalid plant ID" });
+  }
+  return db
+    .query(`DELETE FROM plants WHERE plant_id = $1 RETURNING *`, [plant_id])
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "Plant not found" });
+      }
+      return rows[0];
+    });
+};
+
+// PATCH /plants/:plant_id
+export const updatePlantById = (
+  plant_id: number,
+  updateData: Partial<{
+    plant_type_id: number;
+    nickname: string;
+    photo_url: string;
+    profile_description: string;
+    notes: string;
+    status: string;
+    died_at: string | null;
+  }>
+) => {
+  const fields = Object.keys(updateData);
+
+  if (!fields.length) {
+    return Promise.reject({ status: 400, msg: "No fields to update" });
+  }
+
+  const setQuery = fields.map((field, i) => `${field} = $${i + 1}`).join(", ");
+
+  const values = Object.values(updateData);
+
+  return db
+    .query(
+      `UPDATE plants SET ${setQuery} WHERE plant_id = $${
+        fields.length + 1
+      } RETURNING *;`,
+      [...values, plant_id]
+    )
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "Plant not found" });
+      }
+      return rows[0];
+    });
+};
