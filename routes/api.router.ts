@@ -22,16 +22,16 @@ router.get("/plants/:plant_id/care_schedules/next_due", getPlantsByIdNextDue);
 
 router.post("/plants", postPlants);
 
-router.patch("/plants/:id", patchPlantsById);
+router.patch("/plants/:plant_id", patchPlantsById);
 
-router.delete("/plants/:id", deletePlantsById);
+router.delete("/plants/:plant_id", deletePlantsById);
 
-router.post("/plants/:id/schedules", postPlantsByIdSchedules);
+router.post("/plants/:plant_id/schedules", postPlantsByIdSchedules);
 
-router.patch("/schedules/:id", patchSchedulesById);
+router.patch("/schedules/:care_schedule_id", patchSchedulesById);
 
-router.delete("/schedules/:id", deleteSchedulesById);
+router.delete("/schedules/:care_schedule_id", deleteSchedulesById);
 
-router.patch("/care_tasks/:id/complete", completeCareTasks);
+router.patch("/care_tasks/:care_tasks_id/complete", completeCareTasks);
 
 export default router;
