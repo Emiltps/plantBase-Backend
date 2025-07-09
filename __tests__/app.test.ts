@@ -37,12 +37,59 @@ describe("router tests", () => {
     });
   });
 
-  describe("GET /plants:plant_id", () => {
+  describe("GET /plants/:plant_id", () => {
     test("200: Responds with correct properties of plant with given id", () => {
       return request(app)
         .get("/plants/1")
         .expect(200)
-        .then(({ body }) => {});
+        .then(({ body }) => {
+          const plant = body.plant;
+          expect(typeof body).toBe("object");
+          expect(plant.plant_id).toBe(1);
+          expect(typeof plant.user_id).toBe("number");
+          expect(typeof plant.plant_type_id).toBe("number");
+          expect(typeof plant.nickname).toBe("string");
+          expect(typeof plant.photo_url).toBe("string");
+          expect(typeof plant.profile_description).toBe("string");
+          expect(typeof plant.notes).toBe("string");
+          expect(["alive", "dead", "infected"]).toContain(plant.plantstatus);
+          expect(
+            typeof plant.created_at === "string" || plant.created_at === null
+          ).toBe(true);
+        });
+    });
+    test("404: Responds with error message if plant doesn't exist", () => {
+      return request(app)
+        .get("/plants/800")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Plant not found");
+        });
+    });
+  });
+  describe("GET /plants/:plant_id/care_schedules/next_due", () => {
+    test("200: Responds with next due task with given id", () => {
+      return request(app)
+        .get("/plants/1/care_schedules/next_due")
+        .expect(200)
+        .then(({ body }) => {
+          const task = body.care_task;
+          expect(typeof task.care_tasks_id).toBe("number");
+          expect(typeof task.schedule_id).toBe("number");
+          expect(typeof task.due_at).toBe("string");
+          expect(
+            task.completed_at === null || typeof task.completed_at === "string"
+          ).toBe(true);
+          expect(typeof task.created_at).toBe("string");
+        });
+    });
+    test("404: Responds with message when no due tasks remain", () => {
+      return request(app)
+        .get("/plants/100/care_schedules/next_due")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("No upcoming tasks");
+        });
     });
   });
 });
