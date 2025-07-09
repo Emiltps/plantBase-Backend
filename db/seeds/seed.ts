@@ -69,6 +69,7 @@ const seed = async ({
     plant_id INT REFERENCES plants(plant_id),
     interval_days INT NOT NULL,
     next_due TIMESTAMP NOT NULL,
+    status task_type,
     created_at TIMESTAMP DEFAULT NOW()
     )`);
 
