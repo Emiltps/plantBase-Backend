@@ -6,7 +6,7 @@
 
 import constants from "node:constants";
 
-const app = require("../app");
+import app from "../app";
 const debug = require("debug")("plantbase-backend:server");
 const http = require("http");
 
