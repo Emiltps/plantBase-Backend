@@ -95,7 +95,6 @@ export const deletePlantByPlantId = (
     })
     .catch(next);
 };
-
 // PATCH /plants/:plant_id
 export const patchPlant = (req: Request, res: Response, next: NextFunction) => {
   const plant_id = req.params;
