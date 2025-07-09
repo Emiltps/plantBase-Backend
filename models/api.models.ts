@@ -1,7 +1,7 @@
 import db from "../db/connection";
 
 // GET /plants
-export default fetchPlants = () => {
+export const fetchPlants = () => {
   return db
     .query(
       `SELECT user_id,
@@ -24,7 +24,7 @@ export default fetchPlants = () => {
 };
 
 // GET /plants/:plant_id
-exports.fetchPlantById = (plant_id: number) => {
+export const fetchPlantById = (plant_id: number) => {
   return db
     .query(
       `SELECT user_id,
@@ -50,7 +50,7 @@ exports.fetchPlantById = (plant_id: number) => {
 
 //GET /plants/:plant_id/care_schedule/next_due
 
-exports.fetchNextDueByPlantId = (plant_id: number) => {
+export const fetchNextDueByPlantId = (plant_id: number) => {
   return db
     .query(
       `SELECT s.next_due, s.task_type
