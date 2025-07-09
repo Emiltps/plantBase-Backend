@@ -31,7 +31,7 @@ const seed = async ({
   await db.query(`DROP TYPE IF EXISTS plantstatus`);
 
   await db.query(`CREATE TABLE profiles (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY REFERENCES auth.users(id),
     username VARCHAR(60) UNIQUE NOT NULL,
     email VARCHAR(200) UNIQUE NOT NULL,
     profile_image TEXT,
@@ -83,7 +83,7 @@ const seed = async ({
     )`);
 
   const profilesInsertQueryStr = format(
-    `INSERT INTO profiles (username, email, profile_image, expo_push_token, created_at) VALUES %L RETURNING *;`,
+    `INSERT INTO profiles (id, username, email, profile_image, expo_push_token, created_at) VALUES %L RETURNING *;`,
     profilesData.map(
       ({ username, email, profile_image, expo_push_token, created_at }) => [
         username,
