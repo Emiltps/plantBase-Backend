@@ -76,7 +76,7 @@ export const fetchNextDueByPlantId = (plant_id: number) => {
 // POST /plants
 export const insertPlant = (plantData: PlantType) => {
   const {
-    user_id,
+    profile_id,
     plant_type_id,
     nickname,
     photo_url,

@@ -4,14 +4,14 @@ import format from "pg-format";
 import CareScheduleType from "../types/care_schedule";
 import PlantType from "../types/plant_type";
 import PlantTypesType from "../types/plant_types_type";
-import UserType from "../types/user_type";
+import ProfileType from "../types/profile_type";
 import CareTasksType from "../types/care_tasks_type";
 
 type seedData = {
   careTasksData: CareTasksType[];
   plantTypesData: PlantTypesType[];
   plantsData: PlantType[];
-  usersData: UserType[];
+  usersData: ProfileType[];
   careScheduleData: CareScheduleType[];
 };
 
@@ -26,12 +26,12 @@ const seed = async ({
   await db.query(`DROP TABLE IF EXISTS care_schedule`);
   await db.query(`DROP TABLE IF EXISTS plants`);
   await db.query(`DROP TABLE IF EXISTS plant_types`);
-  await db.query(`DROP TABLE IF EXISTS users`);
+  await db.query(`DROP TABLE IF EXISTS profiles`);
   await db.query(`DROP TYPE IF EXISTS task_type`);
   await db.query(`DROP TYPE IF EXISTS plantstatus`);
 
-  await db.query(`CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
+  await db.query(`CREATE TABLE profiles (
+    profile_id SERIAL PRIMARY KEY,
     username VARCHAR(60) UNIQUE NOT NULL,
     email VARCHAR(200) UNIQUE NOT NULL,
     profile_image TEXT,
@@ -51,7 +51,7 @@ const seed = async ({
 
   await db.query(`CREATE TABLE plants (
     plant_id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(user_id),
+    profile_id INT REFERENCES users(profile_id),
     plant_type_id INT REFERENCES plant_types(plant_type_id),
     nickname VARCHAR(100) NOT NULL,
     photo_url TEXT,
@@ -102,10 +102,10 @@ const seed = async ({
   await db.query(plantTypesInsertQueryStr);
 
   const plantsInsertQueryStr = format(
-    `INSERT INTO plants (user_id, plant_type_id, nickname, photo_url, profile_description, notes, status, created_at, died_at) VALUES %L RETURNING *;`,
+    `INSERT INTO plants (profile_id, plant_type_id, nickname, photo_url, profile_description, notes, status, created_at, died_at) VALUES %L RETURNING *;`,
     plantsData.map(
       ({
-        user_id,
+        profile_id,
         plant_type_id,
         nickname,
         photo_url,
@@ -115,7 +115,7 @@ const seed = async ({
         created_at,
         died_at,
       }) => [
-        user_id,
+        profile_id,
         plant_type_id,
         nickname,
         photo_url,
