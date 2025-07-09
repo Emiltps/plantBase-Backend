@@ -180,4 +180,22 @@ describe("router tests", () => {
         });
     });
   });
+  describe("DELETE /plants/:plant_id", () => {
+    test("204: Responds with no content and deletes the given plant", () => {
+      return request(app)
+        .delete("/plants/1")
+        .expect(204)
+        .then(({ body }) => {
+          expect(body).toEqual({});
+        });
+    });
+    test("404: Responds with error if no plant at given id", () => {
+      return request(app)
+        .delete("/plants/905")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("plant not found");
+        });
+    });
+  });
 });
