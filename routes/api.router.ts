@@ -2,8 +2,8 @@ import express from "express";
 import {
   getPlants,
   getPlantsById,
-  getPlantsByIdNextDue,
-  postPlants,
+  getNextDueByPlantId,
+  postPlant,
   patchPlantsById,
   deletePlantsById,
   postPlantsByIdSchedules,
@@ -18,9 +18,9 @@ router.get("/plants", getPlants);
 
 router.get("/plants/:plant_id", getPlantsById);
 
-router.get("/plants/:plant_id/care_schedules/next_due", getPlantsByIdNextDue);
+router.get("/plants/:plant_id/care_schedules/next_due", getNextDueByPlantId);
 
-router.post("/plants", postPlants);
+router.post("/plants", postPlant);
 
 router.patch("/plants/:plant_id", patchPlantsById);
 
