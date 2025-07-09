@@ -48,7 +48,7 @@ export const getNextDueByPlantId = (
 
 // POST /plants
 export const postPlant = (req: Request, res: Response, next: NextFunction) => {
-  const user_id: number = req.user.id;
+  const user_id: string = req.user.id;
 
   if (!user_id) {
     return res.status(401).json({ msg: "Unauthorised" });

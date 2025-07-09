@@ -2,7 +2,7 @@ type PlantStatus = "alive" | "dead" | "infected";
 
 export default interface PlantType {
   plant_id?: number;
-  id?: number;
+  id?: string;
   plant_type_id: number;
   nickname: string;
   photo_url?: string;

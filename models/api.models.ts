@@ -113,3 +113,5 @@ export const insertPlant = (plantData: PlantType) => {
     )
     .then(({ rows }) => rows[0]);
 };
+
+// DELETE
