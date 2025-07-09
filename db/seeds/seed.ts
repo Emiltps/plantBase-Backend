@@ -11,7 +11,7 @@ type seedData = {
   careTasksData: CareTasksType[];
   plantTypesData: PlantTypesType[];
   plantsData: PlantType[];
-  usersData: ProfileType[];
+  profilesData: ProfileType[];
   careScheduleData: CareScheduleType[];
 };
 
@@ -19,7 +19,7 @@ const seed = async ({
   careTasksData,
   plantTypesData,
   plantsData,
-  usersData,
+  profilesData,
   careScheduleData,
 }: seedData) => {
   await db.query(`DROP TABLE IF EXISTS care_tasks`);
@@ -31,7 +31,7 @@ const seed = async ({
   await db.query(`DROP TYPE IF EXISTS plantstatus`);
 
   await db.query(`CREATE TABLE profiles (
-    profile_id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     username VARCHAR(60) UNIQUE NOT NULL,
     email VARCHAR(200) UNIQUE NOT NULL,
     profile_image TEXT,
@@ -51,7 +51,7 @@ const seed = async ({
 
   await db.query(`CREATE TABLE plants (
     plant_id SERIAL PRIMARY KEY,
-    profile_id INT REFERENCES users(profile_id),
+    id INT REFERENCES profiles(id),
     plant_type_id INT REFERENCES plant_types(plant_type_id),
     nickname VARCHAR(100) NOT NULL,
     photo_url TEXT,
@@ -81,9 +81,9 @@ const seed = async ({
     created_at TIMESTAMP DEFAULT NOW()
     )`);
 
-  const usersInsertQueryStr = format(
-    `INSERT INTO users (username, email, profile_image, expo_push_token, created_at) VALUES %L RETURNING *;`,
-    usersData.map(
+  const profilesInsertQueryStr = format(
+    `INSERT INTO profiles (username, email, profile_image, expo_push_token, created_at) VALUES %L RETURNING *;`,
+    profilesData.map(
       ({ username, email, profile_image, expo_push_token, created_at }) => [
         username,
         email,
@@ -93,7 +93,7 @@ const seed = async ({
       ]
     )
   );
-  await db.query(usersInsertQueryStr);
+  await db.query(profilesInsertQueryStr);
 
   const plantTypesInsertQueryStr = format(
     `INSERT INTO plant_types (name, image_url) VALUES %L RETURNING *;`,
@@ -102,10 +102,10 @@ const seed = async ({
   await db.query(plantTypesInsertQueryStr);
 
   const plantsInsertQueryStr = format(
-    `INSERT INTO plants (profile_id, plant_type_id, nickname, photo_url, profile_description, notes, status, created_at, died_at) VALUES %L RETURNING *;`,
+    `INSERT INTO plants (id, plant_type_id, nickname, photo_url, profile_description, notes, status, created_at, died_at) VALUES %L RETURNING *;`,
     plantsData.map(
       ({
-        profile_id,
+        id,
         plant_type_id,
         nickname,
         photo_url,
@@ -115,7 +115,7 @@ const seed = async ({
         created_at,
         died_at,
       }) => [
-        profile_id,
+        id,
         plant_type_id,
         nickname,
         photo_url,

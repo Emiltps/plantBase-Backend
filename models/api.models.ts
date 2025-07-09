@@ -5,7 +5,7 @@ import PlantType from "../db/types/plant_type";
 export const fetchPlants = () => {
   return db
     .query(
-      `SELECT user_id,
+      `SELECT id,
         plant_type_id,
         nickname,
         photo_url,
@@ -28,7 +28,7 @@ export const fetchPlants = () => {
 export const fetchPlantById = (plant_id: number) => {
   return db
     .query(
-      `SELECT user_id,
+      `SELECT id,
         plant_type_id,
         nickname,
         photo_url,
@@ -76,7 +76,7 @@ export const fetchNextDueByPlantId = (plant_id: number) => {
 // POST /plants
 export const insertPlant = (plantData: PlantType) => {
   const {
-    profile_id,
+    id,
     plant_type_id,
     nickname,
     photo_url,
@@ -89,7 +89,7 @@ export const insertPlant = (plantData: PlantType) => {
   return db
     .query(
       `INSERT INTO plants (
-        user_id,
+        id,
         plant_type_id,
         nickname,
         photo_url,
@@ -101,7 +101,7 @@ export const insertPlant = (plantData: PlantType) => {
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING *;`,
       [
-        user_id,
+        id,
         plant_type_id,
         nickname,
         photo_url ?? null,

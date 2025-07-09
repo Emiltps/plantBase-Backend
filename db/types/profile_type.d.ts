@@ -1,5 +1,5 @@
 export default interface ProfileType {
-  user_id?: number;
+  id?: number;
   username: string;
   email: string;
   profile_image: string;
