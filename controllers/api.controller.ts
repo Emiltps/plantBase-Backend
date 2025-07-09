@@ -48,7 +48,7 @@ export const getNextDueByPlantId = (
 
 // POST /plants
 export const postPlant = (req: Request, res: Response, next: NextFunction) => {
-  const user_id = req.user.id;
+  const user_id: number = req.user.id;
 
   if (!user_id) {
     return res.status(401).json({ msg: "Unauthorised" });
@@ -65,7 +65,7 @@ export const postPlant = (req: Request, res: Response, next: NextFunction) => {
   }: PlantType = req.body;
 
   insertPlant({
-    user_id,
+    id: user_id,
     plant_type_id,
     nickname,
     photo_url,
