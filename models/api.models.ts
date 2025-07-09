@@ -114,4 +114,17 @@ export const insertPlant = (plantData: PlantType) => {
     .then(({ rows }) => rows[0]);
 };
 
-// DELETE
+// DELETE /plants/:plant_id
+export const removePlant = (plant_id: number) => {
+  if (isNaN(plant_id)) {
+    return Promise.reject({ status: 400, msg: "Invalid plant ID" });
+  }
+  return db
+    .query(`DELETE FROM plants WHERE plant_id = $1 RETURNING *`, [plant_id])
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "Plant not found" });
+      }
+      return rows[0];
+    });
+};
