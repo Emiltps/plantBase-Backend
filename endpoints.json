@@ -18,5 +18,194 @@
         }
       ]
     }
+  },
+  "GET /plants/:plant_id": {
+    "description": "Retrieve a single plant by its ID",
+    "exampleResponse": {
+      "plant": {
+        "id": "uuid",
+        "owner_id": "uuid",
+        "plant_type_id": "uuid",
+        "nickname": "My Fern",
+        "photo_url": "https://…",
+        "profile_description": "Loves shade",
+        "notes": "Keep soil moist",
+        "status": "ALIVE",
+        "created_at": "2025-07-09T12:00:00.000Z",
+        "died_at": null
+      }
+    }
+  },
+  "GET /plants/:plant_id/care_schedules/next_due": {
+    "description": "Retrieve the next due care schedule for a given plant",
+    "exampleResponse": {
+      "nextDue": {
+        "schedule_id": "uuid",
+        "task_type": "WATER",
+        "next_due": "2025-07-10T09:00:00.000Z"
+      }
+    }
+  },
+  "POST /plants": {
+    "description": "Create a new plant for the authenticated user",
+    "requests": {
+      "body": {
+        "plant_type_id": "uuid",
+        "nickname": "My Fern",
+        "photo_url": "https://…",
+        "profile_description": "Loves shade",
+        "notes": "Keep soil moist",
+        "status": "ALIVE",
+        "died_at": null
+      }
+    },
+    "exampleResponse": {
+      "plant": {
+        "id": "uuid",
+        "owner_id": "uuid",
+        "plant_type_id": "uuid",
+        "nickname": "My Fern",
+        "photo_url": "https://…",
+        "profile_description": "Loves shade",
+        "notes": "Keep soil moist",
+        "status": "ALIVE",
+        "created_at": "2025-07-09T12:00:00.000Z",
+        "died_at": null
+      }
+    }
+  },
+  "PUT /plants/:plant_id": {
+    "description": "Update one or more fields of an existing plant",
+    "requests": {
+      "body": {
+        "nickname": "New Nickname",
+        "notes": "Updated notes",
+        "status": "INFECTED"
+      }
+    },
+    "exampleResponse": {
+      "plant": {
+        "id": "uuid",
+        "owner_id": "uuid",
+        "plant_type_id": "uuid",
+        "nickname": "New Nickname",
+        "photo_url": "https://…",
+        "profile_description": "Loves shade",
+        "notes": "Updated notes",
+        "status": "INFECTED",
+        "created_at": "2025-07-09T12:00:00.000Z",
+        "died_at": null
+      }
+    }
+  },
+  "DELETE /plants/:plant_id": {
+    "description": "Delete a plant from the authenticated user’s collection",
+    "exampleResponse": {}
+  },
+  "POST /plants/:plant_id/schedules": {
+    "description": "Create a new care schedule for the specified plant",
+    "requests": {
+      "body": {
+        "task_type": "WATER",
+        "interval_days": 7,
+        "next_due": "2025-07-10T09:00:00.000Z"
+      }
+    },
+    "exampleResponse": {
+      "schedule": {
+        "id": "uuid",
+        "plant_id": "uuid",
+        "task_type": "WATER",
+        "interval_days": 7,
+        "next_due": "2025-07-10T09:00:00.000Z",
+        "created_at": "2025-07-09T12:00:00.000Z"
+      }
+    }
+  },
+  "POST /auth/signup": {
+    "description": "Register a new user account using Supabase Auth",
+    "requests": {
+      "body": {
+        "email": "user@example.com",
+        "password": "Password123!",
+        "username": "newuser"
+      }
+    },
+    "exampleResponse": {
+      "user": {
+        "id": "uuid",
+        "email": "user@example.com",
+        "aud": "authenticated",
+        "role": "user",
+        "created_at": "2025-07-09T12:00:00.000Z"
+      }
+    }
+  },
+  "POST /auth/login": {
+    "description": "Authenticate a user and receive a JWT",
+    "requests": {
+      "body": {
+        "email": "user@example.com",
+        "password": "Password123!"
+      }
+    },
+    "exampleResponse": {
+      "accessToken": "eyJhbGci…",
+      "user": {
+        "id": "uuid",
+        "email": "user@example.com",
+        "aud": "authenticated",
+        "role": "user",
+        "created_at": "2025-07-09T12:00:00.000Z"
+      }
+    }
+  },
+  "PUT /schedules/:care_schedule_id": {
+    "description": "Update fields of a care schedule",
+    "requests": {
+      "body": {
+        "interval_days": 14,
+        "next_due": "2025-07-15T09:00:00.000Z"
+      }
+    },
+    "exampleResponse": {
+      "schedule": {
+        "id": "uuid",
+        "plant_id": "uuid",
+        "task_type": "WATER",
+        "interval_days": 14,
+        "next_due": "2025-07-15T09:00:00.000Z",
+        "created_at": "2025-07-09T12:00:00.000Z"
+      }
+    }
+  },
+  "DELETE /schedules/:care_schedule_id": {
+    "description": "Delete a care schedule by its ID",
+    "exampleResponse": {}
+  },
+  "PATCH /care_tasks/:id/complete_at": {
+    "description": "Mark a care task as completed and advance its schedule’s next due date",
+    "requests": {
+      "body": {
+        "completed_at": "2025-07-10T09:00:00.000Z"
+      }
+    },
+    "exampleResponse": {
+      "task": {
+        "id": "uuid",
+        "schedule_id": "uuid",
+        "due_at": "2025-07-10T09:00:00.000Z",
+        "completed_at": "2025-07-10T09:05:00.000Z",
+        "created_at": "2025-07-09T12:00:00.000Z"
+      },
+      "schedule": {
+        "id": "uuid",
+        "plant_id": "uuid",
+        "task_type": "WATER",
+        "interval_days": 7,
+        "next_due": "2025-07-17T09:00:00.000Z",
+        "created_at": "2025-07-09T12:00:00.000Z"
+      }
+    }
   }
 }
