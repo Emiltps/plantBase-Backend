@@ -242,4 +242,66 @@ describe("router tests", () => {
         });
     });
   });
+  describe("PATCH /schedules/:care_schedule_id", () => {
+    test("200: Updates interval_days and return updated schedule", () => {
+      const updatedDays = {
+        interval_days: 10,
+      };
+      return request(app)
+        .patch("/schedules/1")
+        .send(updatedDays)
+        .expect(200)
+        .then(({ body }) => {
+          const schedule = body.schedule;
+          expect(schedule).toBeDefined();
+          expect(schedule.care_schedule_id).toBe(1);
+          expect(schedule.interval_days).toBe(10);
+          expect(typeof schedule.next_due).toBe("string");
+          expect(typeof schedule.created_at).toBe("string");
+        });
+    });
+    test("200: Update next_due ", () => {
+      const updatedDue = {
+        next_due: "2025-07-20T00:00:00.000Z",
+      };
+
+      return request(app)
+        .patch("/schedules/1")
+        .send(updatedDue)
+        .expect(200)
+        .then(({ body }) => {
+          const schedule = body.schedule;
+          expect(schedule.care_schedule_id).toBe(1);
+          expect(schedule.next_due).toBe("2025-07-20T00:00:00.000Z");
+        });
+    });
+    test("400: Missing field returns an error", () => {
+      return request(app)
+        .patch("/schedules/1")
+        .send({})
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("No valid fields");
+        });
+    });
+    test("404: Non-existent care_schedule_id returns error", () => {
+      return request(app)
+        .patch("/schedules/999")
+        .send({ interval_days: 5 })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Schedule not found");
+        });
+    });
+    test("400: Invalid data type ", () => {
+      const invalidInterval = { interval_days: "every day" };
+      return request(app)
+        .patch("/schedules/1")
+        .send(invalidInterval)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid data types");
+        });
+    });
+  });
 });
