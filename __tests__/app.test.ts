@@ -198,4 +198,48 @@ describe("router tests", () => {
         });
     });
   });
+  describe("POST /plants/:plant_id/schedules", () => {
+    test("201: Adds news care schedule and responds with the created schedule", () => {
+      const newSchedule = {
+        task_type: "water",
+        interval_days: 7,
+      };
+      return request(app)
+        .post("/plants/1/schedules")
+        .send(newSchedule)
+        .expect(201)
+        .then(({ body }) => {
+          const schedule = body.schedule;
+          expect(typeof schedule).toBe("object");
+          expect(typeof schedule.care_schedule_id).toBe("number");
+          expect(schedule.plant_id).toBe(1);
+          expect(schedule.task_type).toBe("water");
+          expect(schedule.frequency).toBe(7);
+          expect(typeof schedule.created_at).toBe("string");
+        });
+    });
+
+    test("400: Responds with error if fields are missing", () => {
+      return request(app)
+        .post("/plants/1/schedules")
+        .send({})
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Missing fields");
+        });
+    });
+    test("404: Responds with error if plant_id does not exist", () => {
+      const newSchedule = {
+        task_type: "water",
+        interval_days: 7,
+      };
+      return request(app)
+        .post("/plants/999/schedules")
+        .send(newSchedule)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Plant not found");
+        });
+    });
+  });
 });
