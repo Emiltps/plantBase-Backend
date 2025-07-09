@@ -4,6 +4,7 @@ import {
   fetchPlantById,
   fetchNextDueByPlantId,
   insertPlant,
+  removePlant,
 } from "../models/api.models";
 import { Request, Response, NextFunction } from "express";
 
@@ -76,6 +77,19 @@ export const postPlant = (req: Request, res: Response, next: NextFunction) => {
   })
     .then(({ newPlant }) => {
       res.status(201).json({ plant: newPlant });
+    })
+    .catch(next);
+};
+
+export const deletePlantById = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { plant_id } = req.params;
+  removePlant(Number(plant_id))
+    .then((plant) => {
+      res.status(204).send();
     })
     .catch(next);
 };
