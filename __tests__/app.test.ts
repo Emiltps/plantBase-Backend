@@ -92,4 +92,34 @@ describe("router tests", () => {
         });
     });
   });
+  describe("POST /plants/", () => {
+    test("201: Responds with posted plant and adds it to the database", () => {
+      const newPlant = {
+        id: 1,
+        plant_type_id: 2,
+        nickname: "Fernie",
+        photo_url: "",
+        profile_description: "A small green fern.",
+        notes: "Needs watering every few days.",
+        plantstatus: "alive",
+      };
+      return request(app)
+        .post("/plants")
+        .send(newPlant)
+        .expect(201)
+        .then(({ body }) => {
+          const plant = body.plant;
+          expect(typeof plant).toBe("object");
+          expect(typeof plant.plant_id).toBe("number");
+          expect(plant.id).toBe(1);
+          expect(plant.plant_type_id).toBe(2);
+          expect(plant.nickname).toBe("Fernie");
+          expect(plant.photo_url).toBe("");
+          expect(plant.profile_description).toBe("A small green fern.");
+          expect(plant.notes).toBe("Needs watering every few days.");
+          expect(plant.plantstatus).toBe("alive");
+          expect(typeof plant.created_at).toBe("string");
+        });
+    });
+  });
 });
