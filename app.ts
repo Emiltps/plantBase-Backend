@@ -12,6 +12,7 @@ import {
   handlePSQLErrors,
   handleServerError,
 } from "./middleware/errorHandlers";
+import apiRouter from "./routes/api.docs";
 
 const app = express();
 
@@ -19,9 +20,11 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 
 // Public routes
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/api", express.static(path.join(__dirname, "public")));
+app.use("/api/json", apiRouter);
 app.use("/auth", authRouter);
 
 // Protected routes
