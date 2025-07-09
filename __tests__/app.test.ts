@@ -22,7 +22,7 @@ describe("router tests", () => {
           expect(body.plants.length).not.toBe(0);
           body.topics.forEach((plant: any) => {
             expect(typeof plant.plant_id).toBe("number");
-            expect(typeof plant.user_id).toBe("number");
+            expect(typeof plant.id).toBe("number");
             expect(typeof plant.plant_type_id).toBe("number");
             expect(typeof plant.nickname).toBe("string");
             expect(typeof plant.photo_url).toBe("string");
@@ -46,7 +46,7 @@ describe("router tests", () => {
           const plant = body.plant;
           expect(typeof body).toBe("object");
           expect(plant.plant_id).toBe(1);
-          expect(typeof plant.user_id).toBe("number");
+          expect(typeof plant.id).toBe("number");
           expect(typeof plant.plant_type_id).toBe("number");
           expect(typeof plant.nickname).toBe("string");
           expect(typeof plant.photo_url).toBe("string");
