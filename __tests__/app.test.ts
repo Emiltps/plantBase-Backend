@@ -122,6 +122,16 @@ describe("router tests", () => {
           expect(typeof plant.created_at).toBe("string");
         });
     });
+    test("400: Responds with error if required input missing fields", () => {
+      const badInput = { nickname: "one field" };
+      return request(app)
+        .post("/plants")
+        .send(badInput)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Missing required fields");
+        });
+    });
   });
   describe("PATCH /plants/:plant_id", () => {
     test("200: Updates plant with new data and responds with the updated plant", () => {
