@@ -109,6 +109,7 @@ describe("router tests", () => {
         .expect(201)
         .then(({ body }) => {
           const plant = body.plant;
+          expect(plant).toEqual(newPlant);
           expect(typeof plant).toBe("object");
           expect(typeof plant.plant_id).toBe("number");
           expect(plant.id).toBe(1);
@@ -119,6 +120,53 @@ describe("router tests", () => {
           expect(plant.notes).toBe("Needs watering every few days.");
           expect(plant.plantstatus).toBe("alive");
           expect(typeof plant.created_at).toBe("string");
+        });
+    });
+  });
+  describe("PATCH /plants/:plant_id", () => {
+    test("200: Updates plant with new data and responds with the updated plant", () => {
+      const update = {
+        nickname: "Leafy",
+        notes: "Moved to a sunnier location",
+        plantstatus: "alive",
+      };
+      return request(app)
+        .patch("/plants/1")
+        .send(update)
+        .expect(200)
+        .then(({ body }) => {
+          const plant = body.plant;
+
+          expect(plant.plant_id).toBe(1);
+          expect(plant.nickname).toBe("Leafy");
+          expect(plant.notes).toBe("Moved to a sunnier location");
+          expect(plant.plantstatus).toBe("alive");
+        });
+    });
+    test("404: Responds with error if plant_id does not exist", () => {
+      const update = {
+        nickname: "Leafy",
+        notes: "Moved to a sunnier location",
+        plantstatus: "alive",
+      };
+      return request(app)
+        .patch("/plants/999")
+        .send(update)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Plant not found");
+        });
+    });
+    test("400: Responds with error if input is invalid", () => {
+      const update = {
+        plantstatus: "not valid status",
+      };
+      request(app)
+        .patch("/plants/1999")
+        .send(update)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid plant status");
         });
     });
   });
