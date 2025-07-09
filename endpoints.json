@@ -1,0 +1,22 @@
+{
+  "GET /plants": {
+    "description": "Retrieve an array of all plants belonging to the authenticated user",
+    "queries": [],
+    "exampleResponse": {
+      "plants": [
+        {
+          "id": "uuid",
+          "owner_id": "uuid",
+          "plant_type_id": "uuid",
+          "nickname": "My Fern",
+          "photo_url": "https://…",
+          "profile_description": "Loves shade",
+          "notes": "Keep soil moist",
+          "status": "ALIVE",
+          "created_at": "2025-07-09T12:00:00.000Z",
+          "died_at": null
+        }
+      ]
+    }
+  }
+}
