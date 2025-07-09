@@ -67,10 +67,11 @@ const seed = async ({
   await db.query(`CREATE TABLE care_schedule (
     care_schedule_id SERIAL PRIMARY KEY,
     plant_id INT REFERENCES plants(plant_id),
+    task_type task_type NOT NULL,
     interval_days INT NOT NULL,
     next_due TIMESTAMP NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
-    )`);
+  )`);
 
   await db.query(`
     CREATE TABLE care_tasks (
@@ -130,10 +131,11 @@ const seed = async ({
   await db.query(plantsInsertQueryStr);
 
   const careScheduleInsertQueryStr = format(
-    `INSERT INTO care_schedule (plant_id, interval_days, next_due, created_at) VALUES %L RETURNING *;`,
+    `INSERT INTO care_schedule (plant_id, task_type, interval_days, next_due, created_at) VALUES %L RETURNING *;`,
     careScheduleData.map(
-      ({ plant_id, interval_days, next_due, created_at }) => [
+      ({ plant_id, task_type, interval_days, next_due, created_at }) => [
         plant_id,
+        task_type,
         interval_days,
         next_due,
         created_at,
