@@ -1,4 +1,5 @@
 import db from "../db/connection";
+import PlantType from "../db/types/plant_type";
 
 // GET /plants
 export const fetchPlants = () => {
@@ -70,4 +71,45 @@ export const fetchNextDueByPlantId = (plant_id: number) => {
       }
       return rows[0];
     });
+};
+
+// POST /plants
+export const insertPlant = (plantData: PlantType) => {
+  const {
+    user_id,
+    plant_type_id,
+    nickname,
+    photo_url,
+    profile_description,
+    notes,
+    status,
+    died_at,
+  } = plantData;
+
+  return db
+    .query(
+      `INSERT INTO plants (
+        user_id,
+        plant_type_id,
+        nickname,
+        photo_url,
+        profile_description,
+        notes,
+        status,
+        died_at
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        RETURNING *;`,
+      [
+        user_id,
+        plant_type_id,
+        nickname,
+        photo_url ?? null,
+        profile_description ?? null,
+        notes ?? null,
+        status ?? "alive",
+        died_at ?? null,
+      ]
+    )
+    .then(({ rows }) => rows[0]);
 };

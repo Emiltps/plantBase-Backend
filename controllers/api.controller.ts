@@ -1,7 +1,9 @@
+import PlantType from "../db/types/plant_type";
 import {
   fetchPlants,
   fetchPlantById,
   fetchNextDueByPlantId,
+  insertPlant,
 } from "../models/api.models";
 import { Request, Response, NextFunction } from "express";
 
@@ -40,6 +42,33 @@ export const getNextDueByPlantId = (
   fetchNextDueByPlantId(Number(plant_id))
     .then((nextDue) => {
       res.status(200).json({ nextDue });
+    })
+    .catch(next);
+};
+
+// POST /plants
+export const postPlant = (req: Request, res: Response, next: NextFunction) => {
+  const {
+    plant_type_id,
+    nickname,
+    photo_url,
+    profile_description,
+    notes,
+    status,
+    died_at,
+  }: PlantType = req.body;
+
+  insertPlant({
+    plant_type_id,
+    nickname,
+    photo_url,
+    profile_description,
+    notes,
+    status,
+    died_at,
+  })
+    .then(({ newPlant }) => {
+      res.status(201).json({ plant: newPlant });
     })
     .catch(next);
 };
