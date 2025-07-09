@@ -1,4 +1,4 @@
-export default interface UserType {
+export default interface ProfileType {
   user_id?: number;
   username: string;
   email: string;

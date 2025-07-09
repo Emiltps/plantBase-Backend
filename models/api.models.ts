@@ -1,7 +1,8 @@
 import db from "../db/connection";
+import PlantType from "../db/types/plant_type";
 
 // GET /plants
-export default fetchPlants = () => {
+export const fetchPlants = () => {
   return db
     .query(
       `SELECT user_id,
@@ -24,7 +25,7 @@ export default fetchPlants = () => {
 };
 
 // GET /plants/:plant_id
-exports.fetchPlantById = (plant_id: number) => {
+export const fetchPlantById = (plant_id: number) => {
   return db
     .query(
       `SELECT user_id,
@@ -50,7 +51,7 @@ exports.fetchPlantById = (plant_id: number) => {
 
 //GET /plants/:plant_id/care_schedule/next_due
 
-exports.fetchNextDueByPlantId = (plant_id: number) => {
+export const fetchNextDueByPlantId = (plant_id: number) => {
   return db
     .query(
       `SELECT s.next_due, s.task_type
@@ -70,4 +71,45 @@ exports.fetchNextDueByPlantId = (plant_id: number) => {
       }
       return rows[0];
     });
+};
+
+// POST /plants
+export const insertPlant = (plantData: PlantType) => {
+  const {
+    profile_id,
+    plant_type_id,
+    nickname,
+    photo_url,
+    profile_description,
+    notes,
+    status,
+    died_at,
+  } = plantData;
+
+  return db
+    .query(
+      `INSERT INTO plants (
+        user_id,
+        plant_type_id,
+        nickname,
+        photo_url,
+        profile_description,
+        notes,
+        status,
+        died_at
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        RETURNING *;`,
+      [
+        user_id,
+        plant_type_id,
+        nickname,
+        photo_url ?? null,
+        profile_description ?? null,
+        notes ?? null,
+        status ?? "alive",
+        died_at ?? null,
+      ]
+    )
+    .then(({ rows }) => rows[0]);
 };

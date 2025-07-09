@@ -1,6 +1,6 @@
-import UserType from "../../types/user_type";
+import ProfileType from "../../types/profile_type";
 
-const usersData: UserType[] = [
+const profilesData: ProfileType[] = [
   {
     username: "johndoe",
     email: "johndoe@example.com",
@@ -38,4 +38,4 @@ const usersData: UserType[] = [
   },
 ];
 
-export default usersData;
+export default profilesData;
