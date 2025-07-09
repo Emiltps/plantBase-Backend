@@ -1,7 +1,7 @@
 import db from "../db/connection";
 
 // GET /plants
-exports.fetchPlants = () => {
+export default fetchPlants = () => {
   return db
     .query(
       `SELECT user_id,
@@ -53,7 +53,7 @@ exports.fetchPlantById = (plant_id: number) => {
 exports.fetchNextDueByPlantId = (plant_id: number) => {
   return db
     .query(
-      `SELECT s.next_due 
+      `SELECT s.next_due, s.task_type
         FROM care_schedule s
         JOIN plants p
         ON s.plant_id = p.plant_id
