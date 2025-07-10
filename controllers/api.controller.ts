@@ -1,4 +1,5 @@
 import PlantType from "../db/types/plant_type";
+import CareScheduleType from "../db/types/care_schedule";
 import {
   fetchPlants,
   fetchPlantById,
@@ -6,6 +7,7 @@ import {
   insertPlant,
   removePlant,
   updatePlantById,
+  insertCareScheduleByPlantId,
 } from "../models/api.models";
 import { Request, Response, NextFunction } from "express";
 
@@ -95,14 +97,48 @@ export const deletePlantByPlantId = (
     })
     .catch(next);
 };
+
 // PATCH /plants/:plant_id
 export const patchPlant = (req: Request, res: Response, next: NextFunction) => {
-  const plant_id = req.params;
+  const plant_id = req.params.plant_id;
   const updateData = req.body;
 
   updatePlantById(Number(plant_id), updateData)
     .then((updatedPlant) => {
       res.status(200).json({ plant: updatedPlant });
+    })
+    .catch(next);
+};
+
+// POST /plants/:plant_id/care_schedules
+export const postCareScheduleByPlantId = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user_id: string = req.user.id;
+
+  if (!user_id) {
+    return res.status(401).json({ msg: "Unauthorised" });
+  }
+
+  const plant_id = Number(req.params.plant_id);
+  const { task_type, interval_days, next_due } = req.body;
+
+  if (!task_type || !interval_days || !next_due) {
+    return res.status(400).json({ msg: "Missing required fields" });
+  }
+
+  const careSchedule: CareScheduleType = {
+    plant_id,
+    task_type,
+    interval_days,
+    next_due,
+  };
+
+  insertCareScheduleByPlantId(plant_id, careSchedule)
+    .then((newSchedule) => {
+      res.status(201).json({ schedule: newSchedule.rows[0] });
     })
     .catch(next);
 };

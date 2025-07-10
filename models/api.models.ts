@@ -1,4 +1,5 @@
 import db from "../db/connection";
+import CareScheduleType from "../db/types/care_schedule";
 import PlantType from "../db/types/plant_type";
 
 // GET /plants
@@ -163,6 +164,29 @@ export const updatePlantById = (
       if (!rows.length) {
         return Promise.reject({ status: 404, msg: "Plant not found" });
       }
+      return rows[0];
+    });
+};
+
+// POST /plants/:plant_id/care_schedules
+export const insertCareScheduleByPlantId = (
+  plant_id: number,
+  careScheduleData: CareScheduleType
+) => {
+  const { task_type, interval_days, next_due, created_at } = careScheduleData;
+  return db
+    .query(
+      `INSERT INTO care_schedule (
+      plant_id,
+      task_type,
+      interval_days,
+      next_due,
+      created_at)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *`,
+      [plant_id, task_type, interval_days, next_due, created_at || new Date()]
+    )
+    .then(({ rows }) => {
       return rows[0];
     });
 };

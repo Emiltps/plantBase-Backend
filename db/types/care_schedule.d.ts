@@ -6,5 +6,5 @@ export default interface CareScheduleType {
   task_type: TaskType;
   interval_days: number;
   next_due: string;
-  created_at: string;
+  created_at?: string;
 }
