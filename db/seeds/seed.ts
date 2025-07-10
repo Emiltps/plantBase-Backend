@@ -51,7 +51,7 @@ const seed = async ({
 
   await db.query(`CREATE TABLE plants (
     plant_id SERIAL PRIMARY KEY,
-    id INT REFERENCES profiles(id),
+    owner_id UUID REFERENCES profiles(id),
     plant_type_id INT REFERENCES plant_types(plant_type_id),
     nickname VARCHAR(100) NOT NULL,
     photo_url TEXT,
@@ -67,7 +67,7 @@ const seed = async ({
   await db.query(`CREATE TABLE care_schedule (
     care_schedule_id SERIAL PRIMARY KEY,
     plant_id INT REFERENCES plants(plant_id),
-    task_type NOT NULL,
+    task_type task_type NOT NULL,
     interval_days INT NOT NULL,
     next_due TIMESTAMP NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
@@ -85,7 +85,8 @@ const seed = async ({
   const profilesInsertQueryStr = format(
     `INSERT INTO profiles (id, username, email, profile_image, expo_push_token, created_at) VALUES %L RETURNING *;`,
     profilesData.map(
-      ({ username, email, profile_image, expo_push_token, created_at }) => [
+      ({ id, username, email, profile_image, expo_push_token, created_at }) => [
+        id,
         username,
         email,
         profile_image,
@@ -103,10 +104,10 @@ const seed = async ({
   await db.query(plantTypesInsertQueryStr);
 
   const plantsInsertQueryStr = format(
-    `INSERT INTO plants (id, plant_type_id, nickname, photo_url, profile_description, notes, status, created_at, died_at) VALUES %L RETURNING *;`,
+    `INSERT INTO plants (owner_id, plant_type_id, nickname, photo_url, profile_description, notes, status, created_at, died_at) VALUES %L RETURNING *;`,
     plantsData.map(
       ({
-        id,
+        owner_id,
         plant_type_id,
         nickname,
         photo_url,
@@ -116,7 +117,7 @@ const seed = async ({
         created_at,
         died_at,
       }) => [
-        id,
+        owner_id,
         plant_type_id,
         nickname,
         photo_url,
