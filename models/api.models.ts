@@ -226,3 +226,21 @@ export const updateCareScheduleById = (
       return rows[0];
     });
 };
+
+// DELETE /care_schedules/:care_schedule_id
+export const removeCareSchedule = (care_schedule_id: number) => {
+  if (isNaN(care_schedule_id)) {
+    return Promise.reject({ status: 400, msg: "Invalid schedule ID" });
+  }
+  return db
+    .query(
+      `DELETE FROM care_schedule WHERE care_schedule_id = $1 RETURNING *`,
+      [care_schedule_id]
+    )
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "Schedule not found" });
+      }
+      return rows[0];
+    });
+};
