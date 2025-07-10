@@ -22,6 +22,21 @@ const seed = async ({
   profilesData,
   careScheduleData,
 }: seedData) => {
+  if (process.env.NODE_ENV !== "production") {
+    await db.query(`CREATE SCHEMA IF NOT EXISTS auth;`);
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS auth.users (
+        id UUID PRIMARY KEY,
+        email TEXT
+      );
+    `);
+    const authInsertQuery = format(
+      `INSERT INTO auth.users (id, email) VALUES %L ON CONFLICT (id) DO NOTHING;`,
+      profilesData.map(({ id, email }) => [id, email])
+    );
+    await db.query(authInsertQuery);
+  }
+
   await db.query(`DROP TABLE IF EXISTS care_tasks`);
   await db.query(`DROP TABLE IF EXISTS care_schedule`);
   await db.query(`DROP TABLE IF EXISTS plants`);
@@ -35,7 +50,7 @@ const seed = async ({
     username VARCHAR(60) UNIQUE NOT NULL,
     email VARCHAR(200) UNIQUE NOT NULL,
     profile_image TEXT,
-    expo_push_token TEXT[],
+    expo_push_token TEXT[], 
     created_at TIMESTAMP DEFAULT NOW()
   )`);
 

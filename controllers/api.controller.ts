@@ -64,6 +64,11 @@ export const postPlant: RequestHandler = (req, res, next) => {
     died_at,
   }: PlantType = req.body;
 
+  if (plant_type_id === undefined || nickname === undefined) {
+    res.status(400).json({ msg: "Missing required fields" });
+    return;
+  }
+
   insertPlant({
     owner_id: user_id,
     plant_type_id,
@@ -74,7 +79,7 @@ export const postPlant: RequestHandler = (req, res, next) => {
     status,
     died_at,
   })
-    .then(({ newPlant }) => {
+    .then((newPlant) => {
       res.status(201).json({ plant: newPlant });
     })
     .catch(next);
@@ -128,7 +133,7 @@ export const postCareScheduleByPlantId: RequestHandler = (req, res, next) => {
 
   insertCareScheduleByPlantId(plant_id, careSchedule)
     .then((newSchedule) => {
-      res.status(201).json({ schedule: newSchedule.rows[0] });
+      res.status(201).json({ schedule: newSchedule });
     })
     .catch(next);
 };

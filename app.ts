@@ -13,6 +13,7 @@ import {
   handleServerError,
 } from "./middleware/errorHandlers";
 import apiRouter from "./routes/api.router";
+import apiDocsRouter from "./routes/api.docs";
 
 const app = express();
 
@@ -23,8 +24,8 @@ app.use(cookieParser());
 
 // Public routes
 app.use(express.static(path.join(__dirname, "public")));
-app.use("/api", express.static(path.join(__dirname, "public")));
-app.use("/api/json", apiRouter);
+app.use("/api/json", apiDocsRouter);
+app.use("/api", apiRouter);
 app.use("/auth", authRouter);
 
 // Protected routes

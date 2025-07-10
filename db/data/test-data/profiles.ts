@@ -2,6 +2,14 @@ import ProfileType from "../../types/profile_type";
 
 const profilesData: ProfileType[] = [
   {
+    id: "00000000-0000-0000-0000-000000000000",
+    username: "testuser",
+    email: "test@example.com",
+    profile_image: "",
+    expo_push_token: [],
+    created_at: new Date().toISOString(),
+  },
+  {
     id: "12e3f4a5-b6c7-4d89-8e01-23f45c67d890",
     username: "johndoe",
     email: "johndoe@example.com",
