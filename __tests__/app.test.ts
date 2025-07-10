@@ -304,4 +304,32 @@ describe("router tests", () => {
         });
     });
   });
+  describe("DELETE /schedules/:care_schedule_id", () => {
+    test("204: Deletes a schedule and returns no content", () => {
+      return request(app)
+        .delete("/schedules/1")
+        .expect(204)
+        .then(({ body }) => {
+          expect(body).toEqual({});
+        });
+    });
+
+    test("404: Error when schedule does not exist", () => {
+      return request(app)
+        .delete("/schedules/939")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Care schedule not found");
+        });
+    });
+
+    test("400: Error for invalid ID", () => {
+      return request(app)
+        .delete("/schedules/adf342")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Invalid schedule ID");
+        });
+    });
+  });
 });
