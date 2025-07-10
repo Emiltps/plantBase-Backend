@@ -37,7 +37,7 @@ router.patch(
 );
 
 router.delete(
-  "/schedules/:care_schedule_id",
+  "/care_schedules/:care_schedule_id",
   deleteCareScheduleByCareScheduleId
 );
 
