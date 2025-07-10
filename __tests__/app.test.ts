@@ -303,32 +303,63 @@ describe("router tests", () => {
           expect(body.msg).toBe("Invalid data types");
         });
     });
+
+    describe("DELETE /schedules/:care_schedule_id", () => {
+      test("204: Deletes a schedule and returns no content", () => {
+        return request(app)
+          .delete("/schedules/1")
+          .expect(204)
+          .then(({ body }) => {
+            expect(body).toEqual({});
+          });
+      });
+
+      test("404: Error when schedule does not exist", () => {
+        return request(app)
+          .delete("/schedules/939")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Care schedule not found");
+          });
+      });
+
+      test("400: Error for invalid ID", () => {
+        return request(app)
+          .delete("/schedules/adf342")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body.msg).toBe("Invalid schedule ID");
+          });
+      });
+    });
   });
-  describe("DELETE /schedules/:care_schedule_id", () => {
-    test("204: Deletes a schedule and returns no content", () => {
+  describe("PATCH /care_tasks/:care_tasks_id/complete", () => {
+    test("200: Completes a care task and returns the updated task", () => {
       return request(app)
-        .delete("/schedules/1")
-        .expect(204)
+        .patch("/care_tasks/1/complete")
+        .expect(200)
         .then(({ body }) => {
-          expect(body).toEqual({});
+          const task = body.task;
+          expect(task.care_tasks_id).toBe(1);
+          expect(typeof task.completed_at).toBe("string");
         });
     });
 
-    test("404: Error when schedule does not exist", () => {
+    test("404: Error when care task does not exist", () => {
       return request(app)
-        .delete("/schedules/939")
+        .patch("/care_tasks/999/complete")
         .expect(404)
         .then(({ body }) => {
-          expect(body.msg).toBe("Care schedule not found");
+          expect(body.msg).toBe("Care task not found");
         });
     });
 
-    test("400: Error for invalid ID", () => {
+    test("400: Error for invalid care task ID", () => {
       return request(app)
-        .delete("/schedules/adf342")
+        .patch("/care_tasks/adr4d4/complete")
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("Invalid schedule ID");
+          expect(body.msg).toBe("Invalid care task ID");
         });
     });
   });
