@@ -1,5 +1,8 @@
 {
-  "GET /plants": {
+  "GET /api": {
+    "description": "Serves the API home page (static documentation index)"
+  },
+  "GET /api/plants": {
     "description": "Retrieve an array of all plants belonging to the authenticated user",
     "queries": [],
     "exampleResponse": {
@@ -19,7 +22,7 @@
       ]
     }
   },
-  "GET /plants/:plant_id": {
+  "GET /api/plants/:plant_id": {
     "description": "Retrieve a single plant by its ID",
     "exampleResponse": {
       "plant": {
@@ -36,7 +39,7 @@
       }
     }
   },
-  "GET /plants/:plant_id/care_schedules/next_due": {
+  "GET /api/plants/:plant_id/care_schedules/next_due": {
     "description": "Retrieve the next due care schedule for a given plant",
     "exampleResponse": {
       "nextDue": {
@@ -46,7 +49,7 @@
       }
     }
   },
-  "POST /plants": {
+  "POST /api/plants": {
     "description": "Create a new plant for the authenticated user",
     "requests": {
       "body": {
@@ -74,7 +77,7 @@
       }
     }
   },
-  "PUT /plants/:plant_id": {
+  "PUT /api/plants/:plant_id": {
     "description": "Update one or more fields of an existing plant",
     "requests": {
       "body": {
@@ -98,11 +101,11 @@
       }
     }
   },
-  "DELETE /plants/:plant_id": {
+  "DELETE /api/plants/:plant_id": {
     "description": "Delete a plant from the authenticated user’s collection",
     "exampleResponse": {}
   },
-  "POST /plants/:plant_id/schedules": {
+  "POST /api/plants/:plant_id/schedules": {
     "description": "Create a new care schedule for the specified plant",
     "requests": {
       "body": {
@@ -122,7 +125,7 @@
       }
     }
   },
-  "POST /auth/signup": {
+  "POST /api/auth/signup": {
     "description": "Register a new user account using Supabase Auth",
     "requests": {
       "body": {
@@ -141,7 +144,7 @@
       }
     }
   },
-  "POST /auth/login": {
+  "POST /api/auth/login": {
     "description": "Authenticate a user and receive a JWT",
     "requests": {
       "body": {
@@ -160,7 +163,7 @@
       }
     }
   },
-  "PUT /schedules/:care_schedule_id": {
+  "PUT /api/schedules/:care_schedule_id": {
     "description": "Update fields of a care schedule",
     "requests": {
       "body": {
@@ -179,11 +182,11 @@
       }
     }
   },
-  "DELETE /schedules/:care_schedule_id": {
+  "DELETE /api/schedules/:care_schedule_id": {
     "description": "Delete a care schedule by its ID",
     "exampleResponse": {}
   },
-  "PATCH /care_tasks/:id/complete_at": {
+  "PATCH /api/care_tasks/:id/complete_at": {
     "description": "Mark a care task as completed and advance its schedule’s next due date",
     "requests": {
       "body": {
