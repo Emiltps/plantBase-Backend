@@ -92,7 +92,7 @@ describe("router tests", () => {
         });
     });
   });
-  describe("POST /plants/", () => {
+  describe("POST /plants", () => {
     test("201: Responds with posted plant and adds it to the database", () => {
       const newPlant = {
         id: 1,

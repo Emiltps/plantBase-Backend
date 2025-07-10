@@ -250,9 +250,9 @@ export const updateCareTaskCompletedAt = (care_task_id: number) => {
   return db
     .query(
       `UPDATE care_tasks
-    SET completed_at = NOW()
-    WHERE care_tasks_id = $1
-    RETURNING *`,
+      SET completed_at = NOW()
+      WHERE care_tasks_id = $1
+      RETURNING *`,
       [care_task_id]
     )
     .then(({ rows }) => {
