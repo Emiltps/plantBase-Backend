@@ -8,6 +8,7 @@ import {
   removePlant,
   updatePlantById,
   insertCareScheduleByPlantId,
+  updateCareScheduleById,
 } from "../models/api.models";
 import { Request, Response, NextFunction } from "express";
 
@@ -139,6 +140,22 @@ export const postCareScheduleByPlantId = (
   insertCareScheduleByPlantId(plant_id, careSchedule)
     .then((newSchedule) => {
       res.status(201).json({ schedule: newSchedule.rows[0] });
+    })
+    .catch(next);
+};
+
+// PATCH /care_schedules/:care_schedule_id
+export const patchCareScheduleById = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const care_schedule_id = req.params.care_schedule_id;
+  const updateData = req.body;
+
+  updatePlantById(Number(care_schedule_id), updateData)
+    .then((updatedSchedule) => {
+      res.status(200).json({ schedule: updatedSchedule });
     })
     .catch(next);
 };

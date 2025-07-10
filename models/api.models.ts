@@ -1,6 +1,7 @@
 import db from "../db/connection";
 import CareScheduleType from "../db/types/care_schedule";
 import PlantType from "../db/types/plant_type";
+import { TaskType } from "../db/types/care_schedule";
 
 // GET /plants
 export const fetchPlants = () => {
@@ -187,6 +188,41 @@ export const insertCareScheduleByPlantId = (
       [plant_id, task_type, interval_days, next_due, created_at || new Date()]
     )
     .then(({ rows }) => {
+      return rows[0];
+    });
+};
+
+// PATCH /care_schedules/:care_schedule_id
+export const updateCareScheduleById = (
+  care_schedule_id: number,
+  updateData: Partial<{
+    plant_id: number;
+    task_type: TaskType;
+    interval_days: number;
+    next_due: string;
+  }>
+) => {
+  const fields = Object.keys(updateData);
+
+  if (!fields.length) {
+    return Promise.reject({ status: 400, msg: "No fields to update" });
+  }
+
+  const setQuery = fields.map((field, i) => `${field} = $${i + 1}`).join(", ");
+
+  const values = Object.values(updateData);
+
+  return db
+    .query(
+      `UPDATE care_schedule SET ${setQuery} WHERE care_schedule_id = $${
+        fields.length + 1
+      } RETURNING *;`,
+      [...values, care_schedule_id]
+    )
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "Schedule not found" });
+      }
       return rows[0];
     });
 };
