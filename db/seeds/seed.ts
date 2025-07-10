@@ -67,7 +67,7 @@ const seed = async ({
   await db.query(`CREATE TABLE care_schedule (
     care_schedule_id SERIAL PRIMARY KEY,
     plant_id INT REFERENCES plants(plant_id),
-    task_type task_type NOT NULL,
+    task_type NOT NULL,
     interval_days INT NOT NULL,
     next_due TIMESTAMP NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
