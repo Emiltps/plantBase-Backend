@@ -244,3 +244,21 @@ export const removeCareSchedule = (care_schedule_id: number) => {
       return rows[0];
     });
 };
+
+//PATCH /care_tasks/:care_task_id/complete_at
+export const updateCareTaskCompletedAt = (care_task_id: number) => {
+  return db
+    .query(
+      `UPDATE care_tasks
+    SET completed_at = NOW()
+    WHERE care_tasks_id = $1
+    RETURNING *`,
+      [care_task_id]
+    )
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "Care task not found" });
+      }
+      return rows[0];
+    });
+};
