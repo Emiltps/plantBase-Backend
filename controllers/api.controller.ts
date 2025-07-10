@@ -8,6 +8,8 @@ import {
   removePlant,
   updatePlantById,
   insertCareScheduleByPlantId,
+  updateCareScheduleById,
+  removeCareSchedule,
 } from "../models/api.models";
 import { Request, Response, NextFunction } from "express";
 
@@ -92,7 +94,7 @@ export const deletePlantByPlantId = (
 ) => {
   const { plant_id } = req.params;
   removePlant(Number(plant_id))
-    .then((plant) => {
+    .then(() => {
       res.status(204).send();
     })
     .catch(next);
@@ -100,7 +102,7 @@ export const deletePlantByPlantId = (
 
 // PATCH /plants/:plant_id
 export const patchPlant = (req: Request, res: Response, next: NextFunction) => {
-  const plant_id = req.params.plant_id;
+  const { plant_id } = req.params;
   const updateData = req.body;
 
   updatePlantById(Number(plant_id), updateData)
@@ -139,6 +141,36 @@ export const postCareScheduleByPlantId = (
   insertCareScheduleByPlantId(plant_id, careSchedule)
     .then((newSchedule) => {
       res.status(201).json({ schedule: newSchedule.rows[0] });
+    })
+    .catch(next);
+};
+
+// PATCH /care_schedules/:care_schedule_id
+export const patchCareScheduleByCareScheduleId = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { care_schedule_id } = req.params;
+  const updateData = req.body;
+
+  updateCareScheduleById(Number(care_schedule_id), updateData)
+    .then((updatedSchedule) => {
+      res.status(200).json({ schedule: updatedSchedule });
+    })
+    .catch(next);
+};
+
+// DELETE /care_schedules/:care_schedule_id
+export const deleteCareScheduleByCareScheduleId = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { care_schedule_id } = req.params;
+  removeCareSchedule(Number(care_schedule_id))
+    .then(() => {
+      res.status(204).send();
     })
     .catch(next);
 };
