@@ -7,7 +7,7 @@ import { TaskType } from "../db/types/care_schedule";
 export const fetchPlants = () => {
   return db
     .query(
-      `SELECT id,
+      `SELECT plant_id,
         plant_type_id,
         nickname,
         photo_url,
