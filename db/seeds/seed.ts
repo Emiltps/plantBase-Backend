@@ -70,7 +70,6 @@ const seed = async ({
     task_type NOT NULL,
     interval_days INT NOT NULL,
     next_due TIMESTAMP NOT NULL,
-    status task_type,
     created_at TIMESTAMP DEFAULT NOW()
   )`);
 
