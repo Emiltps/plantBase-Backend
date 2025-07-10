@@ -31,7 +31,7 @@ export const getPlantById = (
 ) => {
   const { plant_id } = req.params;
 
-  fetchPlantById(Number(plant_id))
+  fetchPlantById(String(plant_id))
     .then((plant) => {
       res.status(200).json({ plant });
     })
@@ -46,7 +46,7 @@ export const getNextDueByPlantId = (
 ) => {
   const { plant_id } = req.params;
 
-  fetchNextDueByPlantId(Number(plant_id))
+  fetchNextDueByPlantId(String(plant_id))
     .then((nextDue) => {
       res.status(200).json({ nextDue });
     })
@@ -58,7 +58,8 @@ export const postPlant = (req: Request, res: Response, next: NextFunction) => {
   const user_id: string = req.user.id;
 
   if (!user_id) {
-    return res.status(401).json({ msg: "Unauthorised" });
+    res.status(401).json({ msg: "Unauthorised" });
+    return;
   }
 
   const {
@@ -72,7 +73,7 @@ export const postPlant = (req: Request, res: Response, next: NextFunction) => {
   }: PlantType = req.body;
 
   insertPlant({
-    id: user_id,
+    owner_id: user_id,
     plant_type_id,
     nickname,
     photo_url,
@@ -122,14 +123,16 @@ export const postCareScheduleByPlantId = (
   const user_id: string = req.user.id;
 
   if (!user_id) {
-    return res.status(401).json({ msg: "Unauthorised" });
+    res.status(401).json({ msg: "Unauthorised" });
+    return;
   }
 
   const plant_id = Number(req.params.plant_id);
   const { task_type, interval_days, next_due } = req.body;
 
   if (!task_type || !interval_days || !next_due) {
-    return res.status(400).json({ msg: "Missing required fields" });
+    res.status(400).json({ msg: "Missing required fields" });
+    return;
   }
 
   const careSchedule: CareScheduleType = {
