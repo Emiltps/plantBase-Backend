@@ -8,6 +8,7 @@ import {
   removePlant,
   updatePlantById,
   insertCareScheduleByPlantId,
+  updateCareTaskCompletedAt,
 } from "../models/api.models";
 import { Request, Response, NextFunction } from "express";
 
@@ -141,4 +142,26 @@ export const postCareScheduleByPlantId = (
       res.status(201).json({ schedule: newSchedule.rows[0] });
     })
     .catch(next);
+};
+
+//PATCH /care_tasks/:care_task_id/complete_at
+export const patchCareTaskCompletedAt = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const care_task_id: number = Number(req.params.care_task_id);
+  const care_schedule_id: number = Number(req.body.care_schedule_id);
+  const next_due: string = req.body.next_due;
+
+  updateCareTaskCompletedAt(care_task_id).then((updatedCareTask) => {
+    return updateCareScheduleById(care_schedule_id, { next_due })
+      .then((updatedCareSchedule) => {
+        res.status(201).json({
+          care_task: updatedCareTask,
+          care_schedule: updatedCareSchedule,
+        });
+      })
+      .catch(next);
+  });
 };
