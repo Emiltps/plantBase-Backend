@@ -72,7 +72,7 @@ export const postPlant = (req: Request, res: Response, next: NextFunction) => {
   }: PlantType = req.body;
 
   insertPlant({
-    id: user_id,
+    owner_id: user_id,
     plant_type_id,
     nickname,
     photo_url,

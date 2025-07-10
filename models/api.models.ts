@@ -78,7 +78,7 @@ export const fetchNextDueByPlantId = (plant_id: number) => {
 // POST /plants
 export const insertPlant = (plantData: PlantType) => {
   const {
-    id,
+    owner_id,
     plant_type_id,
     nickname,
     photo_url,
@@ -91,7 +91,7 @@ export const insertPlant = (plantData: PlantType) => {
   return db
     .query(
       `INSERT INTO plants (
-        id,
+        owner_id,
         plant_type_id,
         nickname,
         photo_url,
@@ -103,7 +103,7 @@ export const insertPlant = (plantData: PlantType) => {
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         RETURNING *;`,
       [
-        id,
+        owner_id,
         plant_type_id,
         nickname,
         photo_url ?? null,
