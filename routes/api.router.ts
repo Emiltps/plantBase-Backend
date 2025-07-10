@@ -4,8 +4,8 @@ import {
   getPlantsById,
   getNextDueByPlantId,
   postPlant,
-  patchPlantsById,
-  deletePlantsById,
+  patchPlant,
+  deletePlantByPlantId,
   postPlantsByIdSchedules,
   patchSchedulesById,
   deleteSchedulesById,
@@ -22,9 +22,9 @@ router.get("/plants/:plant_id/care_schedules/next_due", getNextDueByPlantId);
 
 router.post("/plants", postPlant);
 
-router.patch("/plants/:plant_id", patchPlantsById);
+router.patch("/plants/:plant_id", patchPlant);
 
-router.delete("/plants/:plant_id", deletePlantsById);
+router.delete("/plants/:plant_id", deletePlantByPlantId);
 
 router.post("/plants/:plant_id/schedules", postPlantsByIdSchedules);
 
