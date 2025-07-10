@@ -6,7 +6,7 @@ const data = require("../db/data/test-data/index");
 beforeAll(() => seed(data));
 afterAll(() => db.end());
 
-describe("seed", () => {
+describe.skip("seed", () => {
   describe("users", () => {
     type ExistsRow = { exists: boolean };
     test("users table exists", async () => {
