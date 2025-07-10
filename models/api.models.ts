@@ -9,6 +9,7 @@ export const fetchPlants = () => {
     .query(
       `SELECT plant_id,
         plant_type_id,
+        owner_id,
         nickname,
         photo_url,
         profile_description,
@@ -30,8 +31,9 @@ export const fetchPlants = () => {
 export const fetchPlantById = (plant_id: string) => {
   return db
     .query(
-      `SELECT id,
+      `SELECT plant_id,
         plant_type_id,
+        owner_id,
         nickname,
         photo_url,
         profile_description,
@@ -68,7 +70,7 @@ export const fetchNextDueByPlantId = (plant_id: string) => {
       if (!rows.length) {
         return Promise.reject({
           status: 404,
-          msg: "Upcoming task date not found",
+          msg: "No upcoming tasks",
         });
       }
       return rows[0];
