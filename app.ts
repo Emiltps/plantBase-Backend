@@ -12,7 +12,7 @@ import {
   handlePSQLErrors,
   handleServerError,
 } from "./middleware/errorHandlers";
-import apiRouter from "./routes/api.docs";
+import apiRouter from "./routes/api.router";
 
 const app = express();
 

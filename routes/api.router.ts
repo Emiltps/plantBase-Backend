@@ -2,15 +2,15 @@ import express from "express";
 import authRouter from "./auth";
 import {
   getPlants,
-  getPlantsById,
+  getPlantById,
   getNextDueByPlantId,
   postPlant,
   patchPlant,
   deletePlantByPlantId,
-  postPlantsByIdSchedules,
-  patchSchedulesById,
-  deleteSchedulesById,
-  completeCareTasks,
+  postCareScheduleByPlantId,
+  patchCareScheduleByCareScheduleId,
+  deleteCareScheduleByCareScheduleId,
+  patchCareTaskCompletedAt,
 } from "../controllers/api.controller";
 
 const router = express.Router();
@@ -19,7 +19,7 @@ router.use("/auth", authRouter);
 
 router.get("/plants", getPlants);
 
-router.get("/plants/:plant_id", getPlantsById);
+router.get("/plants/:plant_id", getPlantById);
 
 router.get("/plants/:plant_id/care_schedules/next_due", getNextDueByPlantId);
 
@@ -29,12 +29,18 @@ router.patch("/plants/:plant_id", patchPlant);
 
 router.delete("/plants/:plant_id", deletePlantByPlantId);
 
-router.post("/plants/:plant_id/schedules", postPlantsByIdSchedules);
+router.post("/plants/:plant_id/care_schedules", postCareScheduleByPlantId);
 
-router.patch("/schedules/:care_schedule_id", patchSchedulesById);
+router.patch(
+  "/care_schedules/:care_schedule_id",
+  patchCareScheduleByCareScheduleId
+);
 
-router.delete("/schedules/:care_schedule_id", deleteSchedulesById);
+router.delete(
+  "/schedules/:care_schedule_id",
+  deleteCareScheduleByCareScheduleId
+);
 
-router.patch("/care_tasks/:care_tasks_id/complete", completeCareTasks);
+router.patch("/care_tasks/:care_tasks_id/complete", patchCareTaskCompletedAt);
 
 export default router;
