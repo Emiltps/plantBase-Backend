@@ -4,14 +4,14 @@ import format from "pg-format";
 import CareScheduleType from "../types/care_schedule";
 import PlantType from "../types/plant_type";
 import PlantTypesType from "../types/plant_types_type";
-import UserType from "../types/user_type";
+import ProfileType from "../types/profile_type";
 import CareTasksType from "../types/care_tasks_type";
 
 type seedData = {
   careTasksData: CareTasksType[];
   plantTypesData: PlantTypesType[];
   plantsData: PlantType[];
-  usersData: UserType[];
+  profilesData: ProfileType[];
   careScheduleData: CareScheduleType[];
 };
 
@@ -19,19 +19,19 @@ const seed = async ({
   careTasksData,
   plantTypesData,
   plantsData,
-  usersData,
+  profilesData,
   careScheduleData,
 }: seedData) => {
   await db.query(`DROP TABLE IF EXISTS care_tasks`);
   await db.query(`DROP TABLE IF EXISTS care_schedule`);
   await db.query(`DROP TABLE IF EXISTS plants`);
   await db.query(`DROP TABLE IF EXISTS plant_types`);
-  await db.query(`DROP TABLE IF EXISTS users`);
+  await db.query(`DROP TABLE IF EXISTS profiles`);
   await db.query(`DROP TYPE IF EXISTS task_type`);
   await db.query(`DROP TYPE IF EXISTS plantstatus`);
 
-  await db.query(`CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
+  await db.query(`CREATE TABLE profiles (
+    id UUID PRIMARY KEY REFERENCES auth.users(id),
     username VARCHAR(60) UNIQUE NOT NULL,
     email VARCHAR(200) UNIQUE NOT NULL,
     profile_image TEXT,
@@ -51,7 +51,7 @@ const seed = async ({
 
   await db.query(`CREATE TABLE plants (
     plant_id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(user_id),
+    id INT REFERENCES profiles(id),
     plant_type_id INT REFERENCES plant_types(plant_type_id),
     nickname VARCHAR(100) NOT NULL,
     photo_url TEXT,
@@ -67,11 +67,12 @@ const seed = async ({
   await db.query(`CREATE TABLE care_schedule (
     care_schedule_id SERIAL PRIMARY KEY,
     plant_id INT REFERENCES plants(plant_id),
+    task_type task_type NOT NULL,
     interval_days INT NOT NULL,
     next_due TIMESTAMP NOT NULL,
     status task_type,
     created_at TIMESTAMP DEFAULT NOW()
-    )`);
+  )`);
 
   await db.query(`
     CREATE TABLE care_tasks (
@@ -82,9 +83,9 @@ const seed = async ({
     created_at TIMESTAMP DEFAULT NOW()
     )`);
 
-  const usersInsertQueryStr = format(
-    `INSERT INTO users (username, email, profile_image, expo_push_token, created_at) VALUES %L RETURNING *;`,
-    usersData.map(
+  const profilesInsertQueryStr = format(
+    `INSERT INTO profiles (id, username, email, profile_image, expo_push_token, created_at) VALUES %L RETURNING *;`,
+    profilesData.map(
       ({ username, email, profile_image, expo_push_token, created_at }) => [
         username,
         email,
@@ -94,7 +95,7 @@ const seed = async ({
       ]
     )
   );
-  await db.query(usersInsertQueryStr);
+  await db.query(profilesInsertQueryStr);
 
   const plantTypesInsertQueryStr = format(
     `INSERT INTO plant_types (name, image_url) VALUES %L RETURNING *;`,
@@ -103,10 +104,10 @@ const seed = async ({
   await db.query(plantTypesInsertQueryStr);
 
   const plantsInsertQueryStr = format(
-    `INSERT INTO plants (user_id, plant_type_id, nickname, photo_url, profile_description, notes, status, created_at, died_at) VALUES %L RETURNING *;`,
+    `INSERT INTO plants (id, plant_type_id, nickname, photo_url, profile_description, notes, status, created_at, died_at) VALUES %L RETURNING *;`,
     plantsData.map(
       ({
-        user_id,
+        id,
         plant_type_id,
         nickname,
         photo_url,
@@ -116,7 +117,7 @@ const seed = async ({
         created_at,
         died_at,
       }) => [
-        user_id,
+        id,
         plant_type_id,
         nickname,
         photo_url,
@@ -131,10 +132,11 @@ const seed = async ({
   await db.query(plantsInsertQueryStr);
 
   const careScheduleInsertQueryStr = format(
-    `INSERT INTO care_schedule (plant_id, interval_days, next_due, created_at) VALUES %L RETURNING *;`,
+    `INSERT INTO care_schedule (plant_id, task_type, interval_days, next_due, created_at) VALUES %L RETURNING *;`,
     careScheduleData.map(
-      ({ plant_id, interval_days, next_due, created_at }) => [
+      ({ plant_id, task_type, interval_days, next_due, created_at }) => [
         plant_id,
+        task_type,
         interval_days,
         next_due,
         created_at,

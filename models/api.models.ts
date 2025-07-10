@@ -1,10 +1,11 @@
 import db from "../db/connection";
+import PlantType from "../db/types/plant_type";
 
 // GET /plants
-export default fetchPlants = () => {
+export const fetchPlants = () => {
   return db
     .query(
-      `SELECT user_id,
+      `SELECT id,
         plant_type_id,
         nickname,
         photo_url,
@@ -24,10 +25,10 @@ export default fetchPlants = () => {
 };
 
 // GET /plants/:plant_id
-exports.fetchPlantById = (plant_id: number) => {
+export const fetchPlantById = (plant_id: number) => {
   return db
     .query(
-      `SELECT user_id,
+      `SELECT id,
         plant_type_id,
         nickname,
         photo_url,
@@ -50,7 +51,7 @@ exports.fetchPlantById = (plant_id: number) => {
 
 //GET /plants/:plant_id/care_schedule/next_due
 
-exports.fetchNextDueByPlantId = (plant_id: number) => {
+export const fetchNextDueByPlantId = (plant_id: number) => {
   return db
     .query(
       `SELECT s.next_due, s.task_type
@@ -67,6 +68,100 @@ exports.fetchNextDueByPlantId = (plant_id: number) => {
           status: 404,
           msg: "Upcoming task date not found",
         });
+      }
+      return rows[0];
+    });
+};
+
+// POST /plants
+export const insertPlant = (plantData: PlantType) => {
+  const {
+    id,
+    plant_type_id,
+    nickname,
+    photo_url,
+    profile_description,
+    notes,
+    status,
+    died_at,
+  } = plantData;
+
+  return db
+    .query(
+      `INSERT INTO plants (
+        id,
+        plant_type_id,
+        nickname,
+        photo_url,
+        profile_description,
+        notes,
+        status,
+        died_at
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        RETURNING *;`,
+      [
+        id,
+        plant_type_id,
+        nickname,
+        photo_url ?? null,
+        profile_description ?? null,
+        notes ?? null,
+        status ?? "alive",
+        died_at ?? null,
+      ]
+    )
+    .then(({ rows }) => rows[0]);
+};
+
+// DELETE /plants/:plant_id
+export const removePlant = (plant_id: number) => {
+  if (isNaN(plant_id)) {
+    return Promise.reject({ status: 400, msg: "Invalid plant ID" });
+  }
+  return db
+    .query(`DELETE FROM plants WHERE plant_id = $1 RETURNING *`, [plant_id])
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "Plant not found" });
+      }
+      return rows[0];
+    });
+};
+
+// PATCH /plants/:plant_id
+export const updatePlantById = (
+  plant_id: number,
+  updateData: Partial<{
+    plant_type_id: number;
+    nickname: string;
+    photo_url: string;
+    profile_description: string;
+    notes: string;
+    status: string;
+    died_at: string | null;
+  }>
+) => {
+  const fields = Object.keys(updateData);
+
+  if (!fields.length) {
+    return Promise.reject({ status: 400, msg: "No fields to update" });
+  }
+
+  const setQuery = fields.map((field, i) => `${field} = $${i + 1}`).join(", ");
+
+  const values = Object.values(updateData);
+
+  return db
+    .query(
+      `UPDATE plants SET ${setQuery} WHERE plant_id = $${
+        fields.length + 1
+      } RETURNING *;`,
+      [...values, plant_id]
+    )
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "Plant not found" });
       }
       return rows[0];
     });

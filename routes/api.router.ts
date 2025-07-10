@@ -1,4 +1,5 @@
 import express from "express";
+import authRouter from "./auth";
 import {
   getPlants,
   getPlantsById,
@@ -13,6 +14,8 @@ import {
 } from "../controllers/api.controller";
 
 const router = express.Router();
+
+router.use("/auth", authRouter);
 
 router.get("/plants", getPlants);
 

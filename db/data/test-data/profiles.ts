@@ -1,7 +1,8 @@
-import UserType from "../../types/user_type";
+import ProfileType from "../../types/profile_type";
 
-const usersData: UserType[] = [
+const profilesData: ProfileType[] = [
   {
+    id: "12e3f4a5-b6c7-4d89-8e01-23f45c67d890",
     username: "johndoe",
     email: "johndoe@example.com",
     profile_image: "https://randomuser.me/api/portraits/men/1.jpg",
@@ -9,6 +10,7 @@ const usersData: UserType[] = [
     created_at: "2025-07-07T10:00:00Z",
   },
   {
+    id: "12e3f4a5-b6c7-4d89-8e01-23f45c67d891",
     username: "janedoe",
     email: "janedoe@example.com",
     profile_image: "https://randomuser.me/api/portraits/women/2.jpg",
@@ -16,6 +18,7 @@ const usersData: UserType[] = [
     created_at: "2025-07-06T15:30:00Z",
   },
   {
+    id: "12e3f4a5-b6c7-4d89-8e01-23f45c67d892",
     username: "mikesmith",
     email: "mike.smith@example.com",
     profile_image: "https://randomuser.me/api/portraits/men/3.jpg",
@@ -23,6 +26,7 @@ const usersData: UserType[] = [
     created_at: "2025-07-05T08:15:00Z",
   },
   {
+    id: "12e3f4a5-b6c7-4d89-8e01-23f45c67d893",
     username: "emilyjones",
     email: "emily.jones@example.com",
     profile_image: "https://randomuser.me/api/portraits/women/4.jpg",
@@ -30,6 +34,7 @@ const usersData: UserType[] = [
     created_at: "2025-07-04T12:45:00Z",
   },
   {
+    id: "12e3f4a5-b6c7-4d89-8e01-23f45c67d894",
     username: "alexbrown",
     email: "alex.brown@example.com",
     profile_image: "https://randomuser.me/api/portraits/men/5.jpg",
@@ -38,4 +43,4 @@ const usersData: UserType[] = [
   },
 ];
 
-export default usersData;
+export default profilesData;
