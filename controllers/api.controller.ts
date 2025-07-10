@@ -12,10 +12,10 @@ import {
   removeCareSchedule,
   updateCareTaskCompletedAt,
 } from "../models/api.models";
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, RequestHandler } from "express";
 
 // GET /plants
-export const getPlants = (req: Request, res: Response, next: NextFunction) => {
+export const getPlants: RequestHandler = (req, res, next) => {
   fetchPlants()
     .then((plants) => {
       res.status(200).json({ plants });
@@ -24,11 +24,7 @@ export const getPlants = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // GET /plants/:plants_id
-export const getPlantById = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getPlantById: RequestHandler = (req, res, next) => {
   const { plant_id } = req.params;
 
   fetchPlantById(String(plant_id))
@@ -39,11 +35,7 @@ export const getPlantById = (
 };
 
 // GET /plants/:plant_id/care_schedule/next_due
-export const getNextDueByPlantId = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getNextDueByPlantId: RequestHandler = (req, res, next) => {
   const { plant_id } = req.params;
 
   fetchNextDueByPlantId(String(plant_id))
@@ -54,8 +46,8 @@ export const getNextDueByPlantId = (
 };
 
 // POST /plants
-export const postPlant = (req: Request, res: Response, next: NextFunction) => {
-  const user_id: string = req.user.id;
+export const postPlant: RequestHandler = (req, res, next) => {
+  const user_id: string = (req as any).user.id;
 
   if (!user_id) {
     res.status(401).json({ msg: "Unauthorised" });
@@ -89,11 +81,7 @@ export const postPlant = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // DELETE /plants/:plant_id
-export const deletePlantByPlantId = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const deletePlantByPlantId: RequestHandler = (req, res, next) => {
   const { plant_id } = req.params;
   removePlant(Number(plant_id))
     .then(() => {
@@ -103,7 +91,7 @@ export const deletePlantByPlantId = (
 };
 
 // PATCH /plants/:plant_id
-export const patchPlant = (req: Request, res: Response, next: NextFunction) => {
+export const patchPlant: RequestHandler = (req, res, next) => {
   const { plant_id } = req.params;
   const updateData = req.body;
 
@@ -115,12 +103,8 @@ export const patchPlant = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // POST /plants/:plant_id/care_schedules
-export const postCareScheduleByPlantId = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const user_id: string = req.user.id;
+export const postCareScheduleByPlantId: RequestHandler = (req, res, next) => {
+  const user_id: string = (req as any).user.id;
 
   if (!user_id) {
     res.status(401).json({ msg: "Unauthorised" });
@@ -150,10 +134,10 @@ export const postCareScheduleByPlantId = (
 };
 
 // PATCH /care_schedules/:care_schedule_id
-export const patchCareScheduleByCareScheduleId = (
-  req: Request,
-  res: Response,
-  next: NextFunction
+export const patchCareScheduleByCareScheduleId: RequestHandler = (
+  req,
+  res,
+  next
 ) => {
   const { care_schedule_id } = req.params;
   const updateData = req.body;
@@ -166,10 +150,10 @@ export const patchCareScheduleByCareScheduleId = (
 };
 
 // DELETE /care_schedules/:care_schedule_id
-export const deleteCareScheduleByCareScheduleId = (
-  req: Request,
-  res: Response,
-  next: NextFunction
+export const deleteCareScheduleByCareScheduleId: RequestHandler = (
+  req,
+  res,
+  next
 ) => {
   const { care_schedule_id } = req.params;
   removeCareSchedule(Number(care_schedule_id))
@@ -180,11 +164,7 @@ export const deleteCareScheduleByCareScheduleId = (
 };
 
 //PATCH /care_tasks/:care_task_id/complete_at
-export const patchCareTaskCompletedAt = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const patchCareTaskCompletedAt: RequestHandler = (req, res, next) => {
   const care_task_id: number = Number(req.params.care_task_id);
   const care_schedule_id: number = Number(req.body.care_schedule_id);
   const next_due: string = req.body.next_due;

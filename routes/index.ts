@@ -1,18 +1,19 @@
-import { Request, Response, NextFunction } from "express";
+import { Router, Request, Response, NextFunction, json } from "express";
 import cors from "cors";
-const express = require("express");
-const router = express.Router();
 import apiRoutes from "./api.router";
 
-app.use(cors());
-app.use(express.json());
+const router = Router();
 
-app.use("/api", apiRoutes);
+// Apply CORS and JSON middleware to all routes in this router
+router.use(cors());
+router.use(json());
 
-export default app;
+// Mount API routes under /api
+router.use("/api", apiRoutes);
 
-// router.get("/", function (req: Request, res: Response, next: NextFunction) {
-//   res.render("index", { title: "Express" });
+// Example root route (optional)
+// router.get("/", (req: Request, res: Response) => {
+//   res.send("Welcome to PlantBase API");
 // });
 
-// module.exports = router;
+export default router;

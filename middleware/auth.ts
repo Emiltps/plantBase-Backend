@@ -14,8 +14,6 @@ export const requireAuth = async (
   if (error || !data.user)
     return res.status(401).json({ msg: "Invalid token" });
 
-  // Attach user info
-  // @ts-ignore
-  req.user = { id: data.user.id, email: data.user.email };
+  req.user = data.user;
   next();
 };
