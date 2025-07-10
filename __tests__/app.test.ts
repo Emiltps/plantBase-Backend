@@ -20,7 +20,7 @@ describe("router tests", () => {
         .then(({ body }) => {
           expect(Array.isArray(body.plants)).toBe(true);
           expect(body.plants.length).not.toBe(0);
-          body.topics.forEach((plant: any) => {
+          body.plants.forEach((plant: any) => {
             expect(typeof plant.plant_id).toBe("number");
             expect(typeof plant.id).toBe("number");
             expect(typeof plant.plant_type_id).toBe("number");
@@ -95,7 +95,7 @@ describe("router tests", () => {
   describe("POST /plants", () => {
     test("201: Responds with posted plant and adds it to the database", () => {
       const newPlant = {
-        id: 1,
+        id: "1",
         plant_type_id: 2,
         nickname: "Fernie",
         photo_url: "",
@@ -260,7 +260,7 @@ describe("router tests", () => {
           expect(typeof schedule.created_at).toBe("string");
         });
     });
-    test("200: Update next_due ", () => {
+    test("200: Updates next_due field", () => {
       const updatedDue = {
         next_due: "2025-07-20T00:00:00.000Z",
       };
