@@ -6,7 +6,6 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 
 import authRouter from "./routes/auth";
-import { requireAuth } from "./middleware/auth";
 import {
   handleCustomErrors,
   handlePSQLErrors,
