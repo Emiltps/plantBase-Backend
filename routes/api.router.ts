@@ -1,5 +1,6 @@
 import express from "express";
 import authRouter from "./auth";
+import { requireAuth } from "../middleware/auth";
 import {
   getPlants,
   getPlantById,
@@ -23,13 +24,17 @@ router.get("/plants/:plant_id", getPlantById);
 
 router.get("/plants/:plant_id/care_schedules/next_due", getNextDueByPlantId);
 
-router.post("/plants", postPlant);
+router.post("/plants", requireAuth, postPlant);
 
 router.patch("/plants/:plant_id", patchPlant);
 
 router.delete("/plants/:plant_id", deletePlantByPlantId);
 
-router.post("/plants/:plant_id/care_schedules", postCareScheduleByPlantId);
+router.post(
+  "/plants/:plant_id/care_schedules",
+  requireAuth,
+  postCareScheduleByPlantId
+);
 
 router.patch(
   "/care_schedules/:care_schedule_id",
