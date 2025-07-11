@@ -5,10 +5,10 @@
   "main": "./bin/www.ts",
   "scripts": {
     "build": "tsc",
-    "start": "node ./bin/www.ts",
+    "start": "ts-node ./bin/www.ts",
     "setup-dbs": "psql -f ./db/setup-dbs.sql",
     "seed-prod": "NODE_ENV=production npm run seed",
-    "seed": "ts-node ./db/seeds/run-seed.ts",
+    "seed-dev": "ts-node ./db/seeds/run-seed.ts",
     "test": "jest --runInBand"
   },
   "dependencies": {
