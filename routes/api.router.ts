@@ -22,8 +22,6 @@ router.use("/", express.static(path.join(__dirname, "../public")));
 
 router.use("/auth", authRouter);
 
-router.get("/plants", requireAuth, getPlants);
-
 router.get("/plants/:plant_id", requireAuth, getPlantById);
 
 router.get("/users/:user_id/plants", requireAuth, getPlantsByUserId);
