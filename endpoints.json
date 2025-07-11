@@ -77,7 +77,7 @@
       }
     }
   },
-  "PUT /api/plants/:plant_id": {
+  "PATCH /api/plants/:plant_id": {
     "description": "Update one or more fields of an existing plant",
     "requests": {
       "body": {
