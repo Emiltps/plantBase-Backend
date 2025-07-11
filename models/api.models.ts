@@ -248,9 +248,12 @@ export const removeCareSchedule = (care_schedule_id: number) => {
     return Promise.reject({ status: 400, msg: "Invalid schedule ID" });
   }
   return db
-    .query(
-      `DELETE FROM care_schedule WHERE care_schedule_id = $1 RETURNING *`,
-      [care_schedule_id]
+    .query(`DELETE FROM care_tasks WHERE schedule_id = $1`, [care_schedule_id])
+    .then(() =>
+      db.query(
+        `DELETE FROM care_schedule WHERE care_schedule_id = $1 RETURNING *`,
+        [care_schedule_id]
+      )
     )
     .then(({ rows }) => {
       if (!rows.length) {
