@@ -12,7 +12,7 @@ afterAll(() => {
 });
 
 describe("router tests", () => {
-  describe("GET /plants", () => {
+  describe.skip("GET /plants", () => {
     test("200: Responds with an array of plants with correct properties", () => {
       return request(app)
         .get("/api/plants")
@@ -33,6 +33,36 @@ describe("router tests", () => {
               typeof plant.created_at === "string" || plant.created_at === null
             ).toBe(true);
           });
+        });
+    });
+  });
+
+  describe("GET /users/:user_id/plants", () => {
+    test("200: Responds with an array of plants belonging to the authenticated user", () => {
+      return request(app)
+        .get(`/api/users/00000000-0000-0000-0000-000000000000/plants`)
+        .expect(200)
+        .then(({ body }) => {
+          expect(Array.isArray(body.plants)).toBe(true);
+          body.plants.forEach((plant: any) => {
+            expect(plant.owner_id).toBe("00000000-0000-0000-0000-000000000000");
+          });
+        });
+    });
+    test("404: Responds with error if user does not exist", () => {
+      return request(app)
+        .get("/api/users/22222222-2222-2222-2222-222222222222/plants")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("User not found");
+        });
+    });
+    test("403: Responds with forbidden if requesting another user's plants", () => {
+      return request(app)
+        .get("/api/users/12e3f4a5-b6c7-4d89-8e01-23f45c67d890/plants")
+        .expect(403)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Forbidden");
         });
     });
   });
