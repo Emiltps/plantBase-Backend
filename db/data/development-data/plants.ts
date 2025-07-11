@@ -3,7 +3,7 @@ import PlantType from "../../types/plant_type";
 const plantsData: PlantType[] = [
   {
     plant_id: 1,
-    owner_id: "bb20c9e8-2e89-43e3-87fc-c9c4613723c9",
+    owner_id: "00000000-0000-0000-0000-000000000000",
     plant_type_id: 1,
     nickname: "alice_anderson_plant_1",
     photo_url: "",
@@ -15,7 +15,7 @@ const plantsData: PlantType[] = [
   },
   {
     plant_id: 2,
-    owner_id: "bb20c9e8-2e89-43e3-87fc-c9c4613723c9",
+    owner_id: "00000000-0000-0000-0000-000000000000",
     plant_type_id: 2,
     nickname: "alice_anderson_plant_2",
     photo_url: "",
