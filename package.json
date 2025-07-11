@@ -4,7 +4,8 @@
   "private": true,
   "main": "dist/bin/www.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run copy:assets",
+    "copy:assets": "cp -R public dist/public && cp endpoints.json dist/endpoints.json",
     "start": "node dist/bin/www.js",
     "setup-dbs": "psql -f ./db/setup-dbs.sql",
     "seed-prod": "NODE_ENV=production npm run seed",
