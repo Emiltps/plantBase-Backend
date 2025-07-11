@@ -170,7 +170,12 @@ export const patchCareScheduleByCareScheduleId: RequestHandler = (
       }
       res.status(200).json({ schedule: updatedSchedule });
     })
-    .catch(next);
+    .catch((err: any) => {
+      if (err.code === "22P02") {
+        return res.status(400).json({ msg: "Invalid data types" });
+      }
+      next(err);
+    });
 };
 
 // DELETE /care_schedules/:care_schedule_id
