@@ -49,6 +49,7 @@ const seed = async ({
     id UUID PRIMARY KEY REFERENCES auth.users(id),
     username VARCHAR(60) UNIQUE NOT NULL,
     email VARCHAR(200) UNIQUE NOT NULL,
+    full_name TEXT NOT NULL,
     profile_image TEXT,
     expo_push_token TEXT[], 
     created_at TIMESTAMP DEFAULT NOW()
@@ -98,12 +99,13 @@ const seed = async ({
     )`);
 
   const profilesInsertQueryStr = format(
-    `INSERT INTO profiles (id, username, email, profile_image, expo_push_token, created_at) VALUES %L RETURNING *;`,
+    `INSERT INTO profiles (id, username, email, full_name, profile_image, expo_push_token, created_at) VALUES %L RETURNING *;`,
     profilesData.map(
-      ({ id, username, email, profile_image, expo_push_token, created_at }) => [
+      ({ id, username, email, full_name, profile_image, expo_push_token, created_at }) => [
         id,
         username,
         email,
+        full_name,
         profile_image,
         `{${expo_push_token.join(",")}}`,
         created_at,
