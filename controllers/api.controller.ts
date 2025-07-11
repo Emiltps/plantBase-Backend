@@ -126,14 +126,17 @@ export const postCareScheduleByPlantId: RequestHandler = (req, res, next) => {
   }
 
   const plant_id = Number(req.params.plant_id);
-  const { task_type, interval_days } = req.body;
+  const { task_type, interval_days, next_due: suppliedNextDue } = req.body;
 
   if (task_type === undefined || !interval_days === undefined) {
     res.status(400).json({ msg: "Missing required fields" });
     return;
   }
 
-  const next_due = new Date().toISOString();
+  const next_due =
+    suppliedNextDue && !isNaN(Date.parse(suppliedNextDue))
+      ? suppliedNextDue
+      : new Date().toISOString();
 
   const careSchedule: CareScheduleType = {
     plant_id,
