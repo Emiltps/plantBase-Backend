@@ -129,12 +129,12 @@ describe("router tests", () => {
     });
   });
 
-  describe.skip("PATCH /plants/:plant_id", () => {
+  describe("PATCH /plants/:plant_id", () => {
     test("200: Updates plant with new data and responds with the updated plant", () => {
       const update = {
         nickname: "Leafy",
         notes: "Moved to a sunnier location",
-        plantstatus: "alive",
+        status: "alive",
       };
       return request(app)
         .patch("/api/plants/1")
@@ -153,7 +153,7 @@ describe("router tests", () => {
       const update = {
         nickname: "Leafy",
         notes: "Moved to a sunnier location",
-        plantstatus: "alive",
+        status: "alive",
       };
       return request(app)
         .patch("/api/plants/999")
@@ -165,9 +165,9 @@ describe("router tests", () => {
     });
     test("400: Responds with error if input is invalid", () => {
       const update = {
-        plantstatus: "not valid status",
+        status: "not valid status",
       };
-      request(app)
+      return request(app)
         .patch("/api/plants/1999")
         .send(update)
         .expect(400)
