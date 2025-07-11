@@ -100,6 +100,14 @@ export const patchPlant: RequestHandler = (req, res, next) => {
   const { plant_id } = req.params;
   const updateData = req.body;
 
+  if (updateData.status !== undefined) {
+    const validStatuses = ["alive", "dead", "infected"];
+    if (!validStatuses.includes(updateData.status)) {
+      res.status(400).json({ msg: "Invalid plant status" });
+      return;
+    }
+  }
+
   updatePlantById(Number(plant_id), updateData)
     .then((updatedPlant) => {
       res.status(200).json({ plant: updatedPlant });
