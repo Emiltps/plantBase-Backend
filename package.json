@@ -2,13 +2,13 @@
   "name": "plantbase-backend",
   "version": "0.0.0",
   "private": true,
-  "main": "./bin/www.ts",
+  "main": "dist/bin/www.js",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node ./bin/www.ts",
+    "start": "node dist/bin/www.js",
     "setup-dbs": "psql -f ./db/setup-dbs.sql",
     "seed-prod": "NODE_ENV=production npm run seed",
-    "seed-dev": "ts-node ./db/seeds/run-seed.ts",
+    "seed": "ts-node ./db/seeds/run-seed.ts",
     "test": "jest --runInBand"
   },
   "dependencies": {
@@ -21,8 +21,7 @@
     "express": "^4.21.2",
     "morgan": "~1.9.1",
     "pg": "^8.16.3",
-    "pg-format": "^1.0.4",
-    "ts-node-dev": "^2.0.0"
+    "pg-format": "^1.0.4"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.9",
