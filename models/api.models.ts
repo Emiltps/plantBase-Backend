@@ -184,6 +184,23 @@ export const updatePlantById = (
     });
 };
 
+// Fetch a single care_schedule by ID
+export const fetchScheduleById = (care_schedule_id: number) => {
+  return db
+    .query(
+      `SELECT care_schedule_id, plant_id, task_type, interval_days, next_due, created_at
+       FROM care_schedule
+       WHERE care_schedule_id = $1`,
+      [care_schedule_id]
+    )
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "Schedule not found" });
+      }
+      return rows[0];
+    });
+};
+
 // POST /plants/:plant_id/care_schedules
 export const insertCareScheduleByPlantId = (
   plant_id: number,
