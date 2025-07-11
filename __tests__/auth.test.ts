@@ -16,7 +16,12 @@ describe("Auth Endpoints", () => {
   it("POST /auth/signup → creates a new user", async () => {
     const res = await request(app)
       .post("/auth/signup")
-      .send({ email: testEmail, password: testPassword, username: "testuser" })
+      .send({
+        email: testEmail,
+        password: testPassword,
+        username: "testuser",
+        full_name: "test name",
+      })
       .set("Accept", "application/json");
 
     expect(res.status).toBe(201);
