@@ -3,7 +3,6 @@ import CareScheduleType from "../db/types/care_schedule";
 import {
   fetchPlants,
   fetchPlantById,
-  fetchPlantsByUserId,
   fetchNextDueByPlantId,
   insertPlant,
   removePlant,
@@ -13,6 +12,8 @@ import {
   removeCareSchedule,
   updateCareTaskCompletedAt,
   fetchScheduleById,
+  fetchUserById,
+  fetchPlantsByOwner,
 } from "../models/api.models";
 import { Request, Response, NextFunction, RequestHandler } from "express";
 
@@ -36,17 +37,23 @@ export const getPlantById: RequestHandler = (req, res, next) => {
     .catch(next);
 };
 
-export const getPlantsByUserId: RequestHandler = (req, res, next) => {
+export const getPlantsByUser: RequestHandler = (req, res, next) => {
   const { user_id } = req.params;
-  if (user_id !== (req as any).user.id) {
-    res.status(403).json({ msg: "Forbidden" });
-    return;
-  }
-  fetchPlantsByUserId(user_id)
-    .then((plants) => res.status(200).json({ plants }))
+  const authId = (req as any).user.id;
+
+  fetchUserById(user_id)
+    .then((foundUserId) => {
+      if (foundUserId !== authId) {
+        // user exists but this isn’t their data
+        return Promise.reject({ status: 403, msg: "Forbidden" });
+      }
+      return fetchPlantsByOwner(foundUserId);
+    })
+    .then((plants) => {
+      res.status(200).json({ plants });
+    })
     .catch(next);
 };
-
 // GET /plants/:plant_id/care_schedule/next_due
 export const getNextDueByPlantId: RequestHandler = (req, res, next) => {
   const { plant_id } = req.params;

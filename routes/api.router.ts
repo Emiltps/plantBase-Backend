@@ -4,7 +4,7 @@ import { requireAuth } from "../middleware/auth";
 import {
   getPlants,
   getPlantById,
-  getPlantsByUserId,
+  getPlantsByUser,
   getNextDueByPlantId,
   postPlant,
   patchPlant,
@@ -24,7 +24,7 @@ router.use("/auth", authRouter);
 
 router.get("/plants/:plant_id", requireAuth, getPlantById);
 
-router.get("/users/:user_id/plants", requireAuth, getPlantsByUserId);
+router.get("/users/:user_id/plants", requireAuth, getPlantsByUser);
 
 router.get(
   "/plants/:plant_id/care_schedules/next_due",
