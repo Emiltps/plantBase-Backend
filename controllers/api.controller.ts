@@ -145,7 +145,13 @@ export const postCareScheduleByPlantId: RequestHandler = (req, res, next) => {
     .then((newSchedule) => {
       res.status(201).json({ schedule: newSchedule });
     })
-    .catch(next);
+    .catch((err: any) => {
+      if (err.code === "23503") {
+        res.status(404).json({ msg: "Plant not found" });
+      } else {
+        next(err);
+      }
+    });
 };
 
 // PATCH /care_schedules/:care_schedule_id
