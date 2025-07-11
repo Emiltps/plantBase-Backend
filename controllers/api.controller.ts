@@ -11,6 +11,7 @@ import {
   updateCareScheduleById,
   removeCareSchedule,
   updateCareTaskCompletedAt,
+  fetchScheduleById,
 } from "../models/api.models";
 import { Request, Response, NextFunction, RequestHandler } from "express";
 
@@ -125,12 +126,14 @@ export const postCareScheduleByPlantId: RequestHandler = (req, res, next) => {
   }
 
   const plant_id = Number(req.params.plant_id);
-  const { task_type, interval_days, next_due } = req.body;
+  const { task_type, interval_days } = req.body;
 
-  if (!task_type || !interval_days || !next_due) {
+  if (!task_type || !interval_days === undefined) {
     res.status(400).json({ msg: "Missing required fields" });
     return;
   }
+
+  const next_due = new Date().toISOString();
 
   const careSchedule: CareScheduleType = {
     plant_id,
@@ -143,7 +146,13 @@ export const postCareScheduleByPlantId: RequestHandler = (req, res, next) => {
     .then((newSchedule) => {
       res.status(201).json({ schedule: newSchedule });
     })
-    .catch(next);
+    .catch((err: any) => {
+      if (err.code === "23503") {
+        res.status(404).json({ msg: "Plant not found" });
+      } else {
+        next(err);
+      }
+    });
 };
 
 // PATCH /care_schedules/:care_schedule_id
@@ -157,9 +166,17 @@ export const patchCareScheduleByCareScheduleId: RequestHandler = (
 
   updateCareScheduleById(Number(care_schedule_id), updateData)
     .then((updatedSchedule) => {
+      if (updateData.next_due !== undefined) {
+        updatedSchedule.next_due = updateData.next_due;
+      }
       res.status(200).json({ schedule: updatedSchedule });
     })
-    .catch(next);
+    .catch((err: any) => {
+      if (err.code === "22P02") {
+        return res.status(400).json({ msg: "Invalid data types" });
+      }
+      next(err);
+    });
 };
 
 // DELETE /care_schedules/:care_schedule_id
@@ -178,18 +195,28 @@ export const deleteCareScheduleByCareScheduleId: RequestHandler = (
 
 //PATCH /care_tasks/:care_task_id/complete_at
 export const patchCareTaskCompletedAt: RequestHandler = (req, res, next) => {
-  const care_task_id: number = Number(req.params.care_task_id);
-  const care_schedule_id: number = Number(req.body.care_schedule_id);
-  const next_due: string = req.body.next_due;
+  const care_task_id = Number(req.params.care_tasks_id);
+  if (isNaN(care_task_id)) {
+    res.status(400).json({ msg: "Invalid care task ID" });
+    return;
+  }
 
-  updateCareTaskCompletedAt(care_task_id).then((updatedCareTask) => {
-    return updateCareScheduleById(care_schedule_id, { next_due })
-      .then((updatedCareSchedule) => {
-        res.status(201).json({
-          care_task: updatedCareTask,
-          care_schedule: updatedCareSchedule,
+  updateCareTaskCompletedAt(care_task_id)
+    .then((updatedTask) => {
+      const schedule_id = (updatedTask as any).schedule_id;
+      return fetchScheduleById(schedule_id).then((schedule) => {
+        const oldMs = new Date(schedule.next_due).getTime();
+        const newMs = oldMs + schedule.interval_days * 24 * 60 * 60 * 1000;
+        const newNextDue = new Date(newMs).toISOString();
+        return updateCareScheduleById(schedule_id, {
+          next_due: newNextDue,
+        }).then((updatedSchedule) => {
+          res.status(200).json({
+            care_task: updatedTask,
+            care_schedule: updatedSchedule,
+          });
         });
-      })
-      .catch(next);
-  });
+      });
+    })
+    .catch(next);
 };

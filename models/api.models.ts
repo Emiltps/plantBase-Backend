@@ -119,18 +119,31 @@ export const insertPlant = (plantData: PlantType) => {
 };
 
 // DELETE /plants/:plant_id
-export const removePlant = (plant_id: number) => {
+export const removePlant = async (plant_id: number) => {
   if (isNaN(plant_id)) {
     return Promise.reject({ status: 400, msg: "Invalid plant ID" });
   }
-  return db
-    .query(`DELETE FROM plants WHERE plant_id = $1 RETURNING *`, [plant_id])
-    .then(({ rows }) => {
-      if (!rows.length) {
-        return Promise.reject({ status: 404, msg: "Plant not found" });
-      }
-      return rows[0];
-    });
+
+  await db.query(
+    `DELETE FROM care_tasks
+     WHERE schedule_id IN (
+       SELECT care_schedule_id FROM care_schedule WHERE plant_id = $1
+     )`,
+    [plant_id]
+  );
+
+  await db.query(`DELETE FROM care_schedule WHERE plant_id = $1`, [plant_id]);
+
+  const { rows } = await db.query(
+    `DELETE FROM plants WHERE plant_id = $1 RETURNING *`,
+    [plant_id]
+  );
+
+  if (!rows.length) {
+    return Promise.reject({ status: 404, msg: "plant not found" });
+  }
+
+  return rows[0];
 };
 
 // PATCH /plants/:plant_id
@@ -166,6 +179,23 @@ export const updatePlantById = (
     .then(({ rows }) => {
       if (!rows.length) {
         return Promise.reject({ status: 404, msg: "Plant not found" });
+      }
+      return rows[0];
+    });
+};
+
+// Fetch a single care_schedule by ID
+export const fetchScheduleById = (care_schedule_id: number) => {
+  return db
+    .query(
+      `SELECT care_schedule_id, plant_id, task_type, interval_days, next_due, created_at
+       FROM care_schedule
+       WHERE care_schedule_id = $1`,
+      [care_schedule_id]
+    )
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "Schedule not found" });
       }
       return rows[0];
     });
@@ -235,9 +265,12 @@ export const removeCareSchedule = (care_schedule_id: number) => {
     return Promise.reject({ status: 400, msg: "Invalid schedule ID" });
   }
   return db
-    .query(
-      `DELETE FROM care_schedule WHERE care_schedule_id = $1 RETURNING *`,
-      [care_schedule_id]
+    .query(`DELETE FROM care_tasks WHERE schedule_id = $1`, [care_schedule_id])
+    .then(() =>
+      db.query(
+        `DELETE FROM care_schedule WHERE care_schedule_id = $1 RETURNING *`,
+        [care_schedule_id]
+      )
     )
     .then(({ rows }) => {
       if (!rows.length) {
