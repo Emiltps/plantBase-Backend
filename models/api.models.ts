@@ -53,6 +53,11 @@ export const fetchPlantById = (plant_id: string) => {
     });
 };
 
+export const fetchPlantsByUserId = (user_id: string) =>
+  db
+    .query(`SELECT * FROM plants WHERE owner_id = $1`, [user_id])
+    .then(({ rows }) => rows);
+
 //GET /plants/:plant_id/care_schedule/next_due
 
 export const fetchNextDueByPlantId = (plant_id: string) => {

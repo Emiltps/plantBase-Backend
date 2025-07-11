@@ -3,6 +3,7 @@ import CareScheduleType from "../db/types/care_schedule";
 import {
   fetchPlants,
   fetchPlantById,
+  fetchPlantsByUserId,
   fetchNextDueByPlantId,
   insertPlant,
   removePlant,
@@ -32,6 +33,17 @@ export const getPlantById: RequestHandler = (req, res, next) => {
     .then((plant) => {
       res.status(200).json({ plant });
     })
+    .catch(next);
+};
+
+export const getPlantsByUserId: RequestHandler = (req, res, next) => {
+  const { user_id } = req.params;
+  if (user_id !== (req as any).user.id) {
+    res.status(403).json({ msg: "Forbidden" });
+    return;
+  }
+  fetchPlantsByUserId(user_id)
+    .then((plants) => res.status(200).json({ plants }))
     .catch(next);
 };
 
