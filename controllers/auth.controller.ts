@@ -4,9 +4,11 @@ import db from "../db/connection";
 
 // POST /auth/signup
 export const signUp: RequestHandler = async (req, res, next) => {
-  const { email, password, username } = req.body;
-  if (!email || !password || !username) {
-    res.status(400).json({ msg: "Email, password and username are required" });
+  const { email, password, username, full_name } = req.body;
+  if (!email || !password || !username || !full_name) {
+    res
+      .status(400)
+      .json({ msg: "Email, password, username and full name are required" });
     return;
   }
 
@@ -14,6 +16,7 @@ export const signUp: RequestHandler = async (req, res, next) => {
     email,
     password,
     email_confirm: true,
+    user_metadata: { full_name },
   });
   if (error) {
     next({ status: 400, msg: error.message });
@@ -36,10 +39,10 @@ export const signUp: RequestHandler = async (req, res, next) => {
 
   try {
     await db.query(
-      `INSERT INTO profiles (id, username, email) 
-       VALUES ($1, $2, $3)
+      `INSERT INTO profiles (id, username, email, full_name) 
+       VALUES ($1, $2, $3, $4)
        ON CONFLICT (id) DO NOTHING;`,
-      [data.user.id, username, email]
+      [data.user.id, username, email, full_name]
     );
   } catch (seedErr) {
     console.warn("Warning: seeding profiles failed:", seedErr);
