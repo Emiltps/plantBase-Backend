@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": ".",
     "target": "ES2020",
     "module": "commonjs",
     "esModuleInterop": true,
@@ -15,6 +17,8 @@
     "routes/**/*.ts",
     "db/**/*.ts",
     "app.ts",
-    "types/**/*.d.ts"
-  ]
+    "types/**/*.d.ts",
+    "**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
 }

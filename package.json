@@ -2,16 +2,18 @@
   "name": "plantbase-backend",
   "version": "0.0.0",
   "private": true,
+  "main": "./bin/www.ts",
   "scripts": {
-    "start": "ts-node ./bin/www.ts",
+    "build": "tsc",
+    "start": "node ./bin/www.ts",
     "setup-dbs": "psql -f ./db/setup-dbs.sql",
-    "seed-dev": "ts-node ./db/seeds/run-seed.ts",
+    "seed-prod": "NODE_ENV=production npm run seed",
+    "seed": "ts-node ./db/seeds/run-seed.ts",
     "test": "jest --runInBand"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.3",
     "@types/express": "^5.0.3",
-    "@types/node": "^24.0.10",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
@@ -20,20 +22,21 @@
     "morgan": "~1.9.1",
     "pg": "^8.16.3",
     "pg-format": "^1.0.4",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^5.8.3"
+    "ts-node-dev": "^2.0.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.9",
     "@types/cors": "^2.8.19",
     "@types/jest": "^30.0.0",
     "@types/morgan": "^1.9.10",
+    "@types/node": "^24.0.13",
     "@types/pg": "^8.15.4",
     "@types/pg-format": "^1.0.5",
     "@types/supertest": "^6.0.3",
     "jest": "^30.0.4",
     "supertest": "^7.1.3",
     "ts-jest": "^29.4.0",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }
