@@ -177,7 +177,7 @@ describe("router tests", () => {
     });
   });
 
-  describe.skip("DELETE /plants/:plant_id", () => {
+  describe("DELETE /plants/:plant_id", () => {
     test("204: Responds with no content and deletes the given plant", () => {
       return request(app)
         .delete("/api/plants/1")
@@ -196,7 +196,7 @@ describe("router tests", () => {
     });
   });
 
-  describe.skip("POST /plants/:plant_id/schedules", () => {
+  describe("POST /plants/:plant_id/schedules", () => {
     test("201: Adds news care schedule and responds with the created schedule", () => {
       const newSchedule = {
         task_type: "water",
@@ -223,7 +223,7 @@ describe("router tests", () => {
         .send({})
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("Missing fields");
+          expect(body.msg).toBe("Missing required fields");
         });
     });
     test("404: Responds with error if plant_id does not exist", () => {
@@ -241,7 +241,7 @@ describe("router tests", () => {
     });
   });
 
-  describe.skip("PATCH /schedules/:care_schedule_id", () => {
+  describe("PATCH /schedules/:care_schedule_id", () => {
     test("200: Updates interval_days and return updated schedule", () => {
       const updatedDays = {
         interval_days: 10,
@@ -280,7 +280,7 @@ describe("router tests", () => {
         .send({})
         .expect(400)
         .then(({ body }) => {
-          expect(body.msg).toBe("No valid fields");
+          expect(body.msg).toBe("No fields to update");
         });
     });
     test("404: Non-existent care_schedule_id returns error", () => {
@@ -318,7 +318,7 @@ describe("router tests", () => {
           .delete("/api/care_schedules/939")
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).toBe("Care schedule not found");
+            expect(body.msg).toBe("Schedule not found");
           });
       });
 
@@ -333,7 +333,7 @@ describe("router tests", () => {
     });
   });
 
-  describe.skip("PATCH /care_tasks/:care_tasks_id/complete", () => {
+  describe("PATCH /care_tasks/:care_tasks_id/complete", () => {
     test("200: Completes a care task and returns the updated task", () => {
       return request(app)
         .patch("/api/care_tasks/1/complete")
