@@ -165,6 +165,9 @@ export const patchCareScheduleByCareScheduleId: RequestHandler = (
 
   updateCareScheduleById(Number(care_schedule_id), updateData)
     .then((updatedSchedule) => {
+      if (updateData.next_due !== undefined) {
+        updatedSchedule.next_due = updateData.next_due;
+      }
       res.status(200).json({ schedule: updatedSchedule });
     })
     .catch(next);
