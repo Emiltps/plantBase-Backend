@@ -1,5 +1,5 @@
 import "dotenv/config";
-
+import cors from 'cors'
 import express, { Request, Response, NextFunction } from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
@@ -15,6 +15,7 @@ import apiRouter from "./routes/api.router";
 import apiDocsRouter from "./routes/api.docs";
 
 const app = express();
+app.use(cors())
 
 app.use(logger("dev"));
 app.use(express.json());
