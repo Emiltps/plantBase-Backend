@@ -2,6 +2,7 @@ import db from "../db/connection";
 import CareScheduleType from "../db/types/care_schedule";
 import PlantType from "../db/types/plant_type";
 import { TaskType } from "../db/types/care_schedule";
+import CareTasksType from "../db/types/care_tasks_type";
 
 // GET /plants
 export const fetchPlants = () => {
@@ -329,4 +330,45 @@ export const updateCareTaskCompletedAt = (care_task_id: number) => {
       }
       return rows[0];
     });
+};
+
+// Fetch all care schedules for a given plant, ensuring the plant exists
+export const fetchCareSchedulesByPlantId = (plant_id: number) => {
+  return db
+    .query<CareScheduleType>(
+      `SELECT care_schedule_id, plant_id, task_type, interval_days, next_due, created_at
+       FROM care_schedule
+       WHERE plant_id = $1`,
+      [plant_id]
+    )
+    .then(({ rows }) => {
+      if (!rows.length) {
+        return Promise.reject({ status: 404, msg: "Care schedules not found" });
+      }
+      return rows;
+    });
+};
+
+// Fetch all care tasks belonging to a given user across all their plants
+export const fetchCareTasksByUserId = async (
+  userId: string
+): Promise<CareTasksType[]> => {
+  const SQL = `
+    SELECT ct.*
+      FROM care_tasks AS ct
+      JOIN care_schedule AS cs
+        ON ct.schedule_id = cs.care_schedule_id
+      JOIN plants AS p
+        ON cs.plant_id = p.plant_id
+     WHERE p.owner_id::text = $1
+     ORDER BY ct.due_at;
+  `;
+
+  const { rows } = await db.query<CareTasksType>(SQL, [userId]);
+
+  if (rows.length === 0) {
+    return [];
+  }
+
+  return rows;
 };

@@ -13,6 +13,8 @@ import {
   patchCareScheduleByCareScheduleId,
   deleteCareScheduleByCareScheduleId,
   patchCareTaskCompletedAt,
+  getCareSchedulesByPlant,
+  getCareTasksByUser,
 } from "../controllers/api.controller";
 import path from "path";
 
@@ -61,5 +63,12 @@ router.patch(
   requireAuth,
   patchCareTaskCompletedAt
 );
+
+router.get(
+  "/plants/:plant_id/care_schedules",
+  requireAuth,
+  getCareSchedulesByPlant
+);
+router.get("/users/:user_id/care_tasks", requireAuth, getCareTasksByUser);
 
 export default router;
