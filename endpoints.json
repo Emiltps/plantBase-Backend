@@ -2,9 +2,8 @@
   "GET /api": {
     "description": "Serves the API home page (static documentation index)"
   },
-  "GET /api/plants": {
-    "description": "Retrieve an array of all plants belonging to the authenticated user",
-    "queries": [],
+  "GET /api/users/:user_id/plants": {
+    "description": "Retrieve all plants belonging to the specified user",
     "exampleResponse": {
       "plants": [
         {
@@ -20,7 +19,8 @@
           "died_at": null
         }
       ]
-    }
+    },
+    "authentication": "Bearer"
   },
   "GET /api/plants/:plant_id": {
     "description": "Retrieve a single plant by its ID",
@@ -37,7 +37,8 @@
         "created_at": "2025-07-09T12:00:00.000Z",
         "died_at": null
       }
-    }
+    },
+    "authentication": "Bearer"
   },
   "GET /api/plants/:plant_id/care_schedules/next_due": {
     "description": "Retrieve the next due care schedule for a given plant",
@@ -47,10 +48,27 @@
         "task_type": "WATER",
         "next_due": "2025-07-10T09:00:00.000Z"
       }
-    }
+    },
+    "authentication": "Bearer"
+  },
+  "GET /api/plants/:plant_id/care_schedules": {
+    "description": "Retrieve all care schedules for a given plant",
+    "exampleResponse": {
+      "schedules": [
+        {
+          "care_schedule_id": "uuid",
+          "plant_id": "uuid",
+          "task_type": "WATER",
+          "interval_days": 7,
+          "next_due": "2025-07-10T09:00:00.000Z",
+          "created_at": "2025-07-09T12:00:00.000Z"
+        }
+      ]
+    },
+    "authentication": "Bearer"
   },
   "POST /api/plants": {
-    "description": "Create a new plant for the authenticated user",
+    "description": "Create a new plant for the authenticated user (requires authentication)",
     "requests": {
       "body": {
         "plant_type_id": "uuid",
@@ -75,7 +93,8 @@
         "created_at": "2025-07-09T12:00:00.000Z",
         "died_at": null
       }
-    }
+    },
+    "authentication": "Bearer"
   },
   "PATCH /api/plants/:plant_id": {
     "description": "Update one or more fields of an existing plant",
@@ -99,11 +118,13 @@
         "created_at": "2025-07-09T12:00:00.000Z",
         "died_at": null
       }
-    }
+    },
+    "authentication": "Bearer"
   },
   "DELETE /api/plants/:plant_id": {
     "description": "Delete a plant from the authenticated user’s collection",
-    "exampleResponse": {}
+    "exampleResponse": {},
+    "authentication": "Bearer"
   },
   "POST /api/plants/:plant_id/schedules": {
     "description": "Create a new care schedule for the specified plant",
@@ -123,7 +144,8 @@
         "next_due": "2025-07-10T09:00:00.000Z",
         "created_at": "2025-07-09T12:00:00.000Z"
       }
-    }
+    },
+    "authentication": "Bearer"
   },
   "POST /api/auth/signup": {
     "description": "Register a new user account using Supabase Auth",
@@ -163,7 +185,7 @@
       }
     }
   },
-  "PUT /api/schedules/:care_schedule_id": {
+  "PATCH /api/schedules/:care_schedule_id": {
     "description": "Update fields of a care schedule",
     "requests": {
       "body": {
@@ -180,11 +202,13 @@
         "next_due": "2025-07-15T09:00:00.000Z",
         "created_at": "2025-07-09T12:00:00.000Z"
       }
-    }
+    },
+    "authentication": "Bearer"
   },
   "DELETE /api/schedules/:care_schedule_id": {
     "description": "Delete a care schedule by its ID",
-    "exampleResponse": {}
+    "exampleResponse": {},
+    "authentication": "Bearer"
   },
   "PATCH /api/care_tasks/:id/complete_at": {
     "description": "Mark a care task as completed and advance its schedule’s next due date",
@@ -209,6 +233,22 @@
         "next_due": "2025-07-17T09:00:00.000Z",
         "created_at": "2025-07-09T12:00:00.000Z"
       }
-    }
+    },
+    "authentication": "Bearer"
+  },
+  "GET /api/users/:user_id/care_tasks": {
+    "description": "Retrieve all care tasks for the specified user",
+    "exampleResponse": {
+      "care_tasks": [
+        {
+          "care_tasks_id": "uuid",
+          "schedule_id": "uuid",
+          "due_at": "2025-07-10T09:00:00.000Z",
+          "completed_at": "2025-07-10T09:05:00.000Z",
+          "created_at": "2025-07-09T12:00:00.000Z"
+        }
+      ]
+    },
+    "authentication": "Bearer"
   }
 }

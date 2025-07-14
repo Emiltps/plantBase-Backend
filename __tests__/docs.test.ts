@@ -24,6 +24,6 @@ describe("Documentation and static file routes", () => {
     expect(res.headers["content-type"]).toMatch(/json/);
     expect(res.body).toHaveProperty("GET /api");
     expect(typeof res.body["GET /api"].description).toBe("string");
-    expect(res.body).toHaveProperty("GET /api/plants");
+    expect(res.body).toHaveProperty("POST /api/plants");
   });
 });

@@ -12,39 +12,6 @@
       <h2>API Routes for PlantBase</h2>
 
       <details>
-        <h3>GET /api/plants</h3>
-        <summary><span class="method get">GET</span> /plants</summary>
-        <div class="sub-section">
-          <h4>Description</h4>
-          <p>
-            Retrieve an array of all plants belonging to the authenticated user.
-          </p>
-        </div>
-        <div class="sub-section">
-          <h4>Example Response</h4>
-          <pre>
-{
-  "plants": [
-    {
-      "id": "uuid",
-      "owner_id": "uuid",
-      "plant_type_id": "uuid",
-      "nickname": "My Fern",
-      "photo_url": "https://...",
-      "profile_description": "Loves shade",
-      "notes": "Keep soil moist",
-      "status": "ALIVE",
-      "created_at": "2025-07-09T12:00:00.000Z",
-      "died_at": null
-    }
-  ]
-}
-      </pre
-          >
-        </div>
-      </details>
-
-      <details>
         <h3>GET /api/plants/:plant_id</h3>
         <summary><span class="method get">GET</span> /plants/:plant_id</summary>
         <div class="sub-section">
@@ -77,7 +44,7 @@
         <h3>GET /api/plants/:plant_id/care_schedules/next_due</h3>
         <summary>
           <span class="method get">GET</span>
-          /plants/:plant_id/care_schedules/next_due
+          /api/plants/:plant_id/care_schedules/next_due
         </summary>
         <div class="sub-section">
           <h4>Description</h4>
@@ -92,6 +59,35 @@
     "task_type": "WATER",
     "next_due": "2025-07-10T09:00:00.000Z"
   }
+}
+      </pre
+          >
+        </div>
+      </details>
+
+      <details>
+        <h3>GET /api/plants/:plant_id/care_schedules</h3>
+        <summary>
+          <span class="method get">GET</span> /plants/:plant_id/care_schedules
+        </summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>Retrieve all care schedules for a specific plant.</p>
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "schedules": [
+    {
+      "id": "uuid",
+      "plant_id": "uuid",
+      "task_type": "WATER",
+      "interval_days": 7,
+      "next_due": "2025-07-10T09:00:00.000Z",
+      "created_at": "2025-07-09T12:00:00.000Z"
+    }
+  ]
 }
       </pre
           >
@@ -304,6 +300,41 @@
       </details>
 
       <details>
+        <h3>GET /api/users/:user_id/plants</h3>
+        <summary>
+          <span class="method get">GET</span> /users/:user_id/plants
+        </summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>
+            Retrieve an array of plants belonging to the authenticated user.
+          </p>
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "plants": [
+    {
+      "id": "uuid",
+      "owner_id": "uuid",
+      "plant_type_id": "uuid",
+      "nickname": "My Fern",
+      "photo_url": "https://...",
+      "profile_description": "Loves shade",
+      "notes": "Keep soil moist",
+      "status": "ALIVE",
+      "created_at": "2025-07-09T12:00:00.000Z",
+      "died_at": null
+    }
+  ]
+}
+      </pre
+          >
+        </div>
+      </details>
+
+      <details>
         <h3>PATCH /api/care_schedules/:care_schedule_id</h3>
         <summary>
           <span class="method patch">PATCH</span>
@@ -392,6 +423,34 @@
     "next_due": "2025-07-17T09:00:00.000Z",
     "created_at": "2025-07-09T12:00:00.000Z"
   }
+}
+      </pre
+          >
+        </div>
+      </details>
+
+      <details>
+        <h3>GET /api/users/:user_id/care_tasks</h3>
+        <summary>
+          <span class="method get">GET</span> /users/:user_id/care_tasks
+        </summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>Retrieve all care tasks for a specific user.</p>
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "care_tasks": [
+    {
+      "id": "uuid",
+      "schedule_id": "uuid",
+      "due_at": "2025-07-10T09:00:00.000Z",
+      "completed_at": "2025-07-10T09:05:00.000Z",
+      "created_at": "2025-07-09T12:00:00.000Z"
+    }
+  ]
 }
       </pre
           >
