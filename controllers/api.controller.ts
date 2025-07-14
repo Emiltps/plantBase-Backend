@@ -14,6 +14,8 @@ import {
   fetchScheduleById,
   fetchUserById,
   fetchPlantsByOwner,
+  fetchCareSchedulesByPlantId,
+  fetchCareTasksByUserId,
 } from "../models/api.models";
 import { Request, Response, NextFunction, RequestHandler } from "express";
 
@@ -239,6 +241,41 @@ export const patchCareTaskCompletedAt: RequestHandler = (req, res, next) => {
           });
         });
       });
+    })
+    .catch(next);
+};
+
+// GET /plants/:plant_id/care_schedules
+export const getCareSchedulesByPlant: RequestHandler = (req, res, next) => {
+  const { plant_id } = req.params;
+  const userId = (req as any).user.id;
+
+  fetchPlantById(plant_id)
+    .then((plant) => {
+      if (plant.owner_id !== userId) {
+        return Promise.reject({ status: 403, msg: "Forbidden" });
+      }
+      return fetchCareSchedulesByPlantId(Number(plant_id));
+    })
+    .then((schedules) => {
+      res.status(200).json({ schedules });
+    })
+    .catch(next);
+};
+
+// GET /users/:user_id/care_tasks
+export const getCareTasksByUser: RequestHandler = (req, res, next) => {
+  const { user_id } = req.params;
+  const userId = (req as any).user.id;
+
+  if (user_id !== userId) {
+    res.status(403).json({ msg: "Forbidden" });
+    return;
+  }
+
+  fetchCareTasksByUserId(userId)
+    .then((tasks) => {
+      res.status(200).json({ tasks });
     })
     .catch(next);
 };
