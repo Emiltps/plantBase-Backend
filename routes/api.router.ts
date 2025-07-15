@@ -15,6 +15,8 @@ import {
   patchCareTaskCompletedAt,
   getCareSchedulesByPlant,
   getCareTasksByUser,
+  patchProfileByUser,
+  getProfileByUser,
 } from "../controllers/api.controller";
 import path from "path";
 
@@ -70,5 +72,9 @@ router.get(
   getCareSchedulesByPlant
 );
 router.get("/users/:user_id/care_tasks", requireAuth, getCareTasksByUser);
+
+router.get("/users/:user_id/profile", requireAuth, getProfileByUser);
+
+router.patch("/users/:user_id/profile", requireAuth, patchProfileByUser);
 
 export default router;

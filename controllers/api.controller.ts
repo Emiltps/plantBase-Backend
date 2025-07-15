@@ -18,6 +18,7 @@ import {
   fetchCareTasksByUserId,
 } from "../models/api.models";
 import { Request, Response, NextFunction, RequestHandler } from "express";
+import { supabase } from "../lib/supabaseClient";
 
 // GET /plants
 export const getPlants: RequestHandler = (req, res, next) => {
@@ -278,4 +279,53 @@ export const getCareTasksByUser: RequestHandler = (req, res, next) => {
       res.status(200).json({ tasks });
     })
     .catch(next);
+};
+
+// GET /users/:user_id/profile
+export const getProfileByUser: RequestHandler = async (req, res, next) => {
+  try {
+    const { user_id } = req.params;
+    const authId = (req as any).user.id;
+    if (authId !== user_id) {
+      res.status(403).json({ msg: "Forbidden" });
+      return;
+    }
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("username, profile_image")
+      .eq("id", user_id)
+      .single();
+    if (error) {
+      res.status(400).json({ msg: error.message });
+      return;
+    }
+    res.status(200).json({ profile: data });
+    return;
+  } catch (err) {
+    next(err);
+  }
+};
+
+// PATCH /users/:user_id/profile
+export const patchProfileByUser: RequestHandler = async (req, res, next) => {
+  try {
+    const { user_id } = req.params;
+    const authId = (req as any).user.id;
+    if (authId !== user_id) {
+      res.status(403).json({ msg: "Forbidden" });
+      return;
+    }
+    const { username, profile_image } = req.body;
+    const { error } = await supabase
+      .from("profiles")
+      .upsert({ id: user_id, username, profile_image }, { onConflict: "id" });
+    if (error) {
+      res.status(400).json({ msg: error.message });
+      return;
+    }
+    res.sendStatus(204);
+    return;
+  } catch (err) {
+    next(err);
+  }
 };
