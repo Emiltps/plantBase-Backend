@@ -250,5 +250,26 @@
       ]
     },
     "authentication": "Bearer"
+  },
+  "GET /api/users/:user_id/profile": {
+    "description": "Retrieve the profile (username and profile_image) for the specified user",
+    "authentication": "Bearer",
+    "exampleResponse": {
+      "profile": {
+        "username": "johndoe",
+        "profile_image": "https://example.com/avatar.jpg"
+      }
+    }
+  },
+  "PATCH /api/users/:user_id/profile": {
+    "description": "Upsert the profile data for the specified user (username and profile_image)",
+    "authentication": "Bearer",
+    "requests": {
+      "body": {
+        "username": "newuser",
+        "profile_image": "https://example.com/new-avatar.jpg"
+      }
+    },
+    "exampleResponse": {}
   }
 }

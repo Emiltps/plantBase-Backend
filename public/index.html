@@ -39,6 +39,52 @@
           >
         </div>
       </details>
+      <details>
+        <h3>GET /api/users/:user_id/profile</h3>
+        <summary>
+          <span class="method get">GET</span> /api/users/:user_id/profile
+        </summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>
+            Retrieve the profile (username and profile_image) for the specified
+            user.
+          </p>
+        </div>
+        <div class="sub-section">
+          <h4>Example Response</h4>
+          <pre>
+{
+  "profile": {
+    "username": "johndoe",
+    "profile_image": "https://example.com/avatar.jpg"
+  }
+}</pre
+          >
+        </div>
+      </details>
+      <details>
+        <h3>PATCH /api/users/:user_id/profile</h3>
+        <summary>
+          <span class="method patch">PATCH</span> /api/users/:user_id/profile
+        </summary>
+        <div class="sub-section">
+          <h4>Description</h4>
+          <p>
+            Upsert the profile data (username and profile_image) for the
+            specified user.
+          </p>
+        </div>
+        <div class="sub-section">
+          <h4>Request Body</h4>
+          <pre>
+{
+  "username": "newuser",
+  "profile_image": "https://example.com/new-avatar.jpg"
+}</pre
+          >
+        </div>
+      </details>
 
       <details>
         <h3>GET /api/plants/:plant_id/care_schedules/next_due</h3>
