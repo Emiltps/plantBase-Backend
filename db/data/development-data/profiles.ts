@@ -6,7 +6,8 @@ const profilesData: ProfileType[] = [
     username: "alice_anderson",
     email: "alice.anderson@example.com",
     full_name: "Alice Anderson",
-    profile_image: "https://randomuser.me/api/portraits/women/1.jpg",
+    profile_image:
+      "https://dbpweaxmmxrwpflkfdhh.supabase.co/storage/v1/object/public/avatar//avatar_9.jpeg",
     expo_push_token: [],
     created_at: "2025-07-07T10:00:00Z",
   },
@@ -15,7 +16,8 @@ const profilesData: ProfileType[] = [
     username: "bob_brown",
     email: "bob.brown@example.com",
     full_name: "Bob Brown",
-    profile_image: "https://randomuser.me/api/portraits/men/2.jpg",
+    profile_image:
+      "https://dbpweaxmmxrwpflkfdhh.supabase.co/storage/v1/object/public/avatar//avatar_1.jpeg",
     expo_push_token: [],
     created_at: "2025-07-07T10:05:00Z",
   },
@@ -24,7 +26,8 @@ const profilesData: ProfileType[] = [
     username: "carla_carter",
     email: "carla.carter@example.com",
     full_name: "Carla Carter",
-    profile_image: "https://randomuser.me/api/portraits/women/3.jpg",
+    profile_image:
+      "https://dbpweaxmmxrwpflkfdhh.supabase.co/storage/v1/object/public/avatar//avatar_10.jpeg",
     expo_push_token: [],
     created_at: "2025-07-07T10:10:00Z",
   },
@@ -33,7 +36,8 @@ const profilesData: ProfileType[] = [
     username: "david_davis",
     email: "david.davis@example.com",
     full_name: "David Davis",
-    profile_image: "https://randomuser.me/api/portraits/men/4.jpg",
+    profile_image:
+      "https://dbpweaxmmxrwpflkfdhh.supabase.co/storage/v1/object/public/avatar//avatar_3.jpeg",
     expo_push_token: [],
     created_at: "2025-07-07T10:15:00Z",
   },
@@ -42,7 +46,8 @@ const profilesData: ProfileType[] = [
     username: "eva_evans",
     email: "eva.evans@example.com",
     full_name: "Eva Evans",
-    profile_image: "https://randomuser.me/api/portraits/women/5.jpg",
+    profile_image:
+      "https://dbpweaxmmxrwpflkfdhh.supabase.co/storage/v1/object/public/avatar//avatar_2.jpeg",
     expo_push_token: [],
     created_at: "2025-07-07T10:20:00Z",
   },
@@ -51,7 +56,8 @@ const profilesData: ProfileType[] = [
     username: "frank_foster",
     email: "frank.foster@example.com",
     full_name: "Frank Foster",
-    profile_image: "https://randomuser.me/api/portraits/men/6.jpg",
+    profile_image:
+      "https://dbpweaxmmxrwpflkfdhh.supabase.co/storage/v1/object/public/avatar//avatar_5.jpeg",
     expo_push_token: [],
     created_at: "2025-07-07T10:25:00Z",
   },
@@ -60,7 +66,8 @@ const profilesData: ProfileType[] = [
     username: "grace_green",
     email: "grace.green@example.com",
     full_name: "Grace Green",
-    profile_image: "https://randomuser.me/api/portraits/women/7.jpg",
+    profile_image:
+      "https://dbpweaxmmxrwpflkfdhh.supabase.co/storage/v1/object/public/avatar//avatar_4.jpeg",
     expo_push_token: [],
     created_at: "2025-07-07T10:30:00Z",
   },
@@ -69,7 +76,8 @@ const profilesData: ProfileType[] = [
     username: "hank_harris",
     email: "hank.harris@example.com",
     full_name: "Hank Harris",
-    profile_image: "https://randomuser.me/api/portraits/men/8.jpg",
+    profile_image:
+      "https://dbpweaxmmxrwpflkfdhh.supabase.co/storage/v1/object/public/avatar//avatar_6.jpeg",
     expo_push_token: [],
     created_at: "2025-07-07T10:35:00Z",
   },
@@ -78,7 +86,8 @@ const profilesData: ProfileType[] = [
     username: "ivy_irving",
     email: "ivy.irving@example.com",
     full_name: "Ivy Irving",
-    profile_image: "https://randomuser.me/api/portraits/women/9.jpg",
+    profile_image:
+      "https://dbpweaxmmxrwpflkfdhh.supabase.co/storage/v1/object/public/avatar//avatar_8.jpeg",
     expo_push_token: [],
     created_at: "2025-07-07T10:40:00Z",
   },
@@ -87,7 +96,8 @@ const profilesData: ProfileType[] = [
     username: "jack_jackson",
     email: "jack.jackson@example.com",
     full_name: "Jack Jackson",
-    profile_image: "https://randomuser.me/api/portraits/men/10.jpg",
+    profile_image:
+      "https://dbpweaxmmxrwpflkfdhh.supabase.co/storage/v1/object/public/avatar//avatar_7.jpeg",
     expo_push_token: [],
     created_at: "2025-07-07T10:45:00Z",
   },
