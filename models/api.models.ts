@@ -352,23 +352,28 @@ export const fetchCareSchedulesByPlantId = (plant_id: number) => {
 // Fetch all care tasks belonging to a given user across all their plants
 export const fetchCareTasksByUserId = async (
   userId: string
-): Promise<CareTasksType[]> => {
+): Promise<
+  (CareTasksType & { task_type: string; nickname: string; photo_url: string })[]
+> => {
   const SQL = `
-    SELECT ct.*
-      FROM care_tasks AS ct
-      JOIN care_schedule AS cs
-        ON ct.schedule_id = cs.care_schedule_id
-      JOIN plants AS p
-        ON cs.plant_id = p.plant_id
-     WHERE p.owner_id::text = $1
-     ORDER BY ct.due_at;
+    SELECT 
+      ct.*,
+      cs.task_type,
+      p.nickname,
+      p.photo_url
+    FROM care_tasks AS ct
+    JOIN care_schedule AS cs
+      ON ct.schedule_id = cs.care_schedule_id
+    JOIN plants AS p
+      ON cs.plant_id = p.plant_id
+    WHERE p.owner_id::text = $1
+    ORDER BY ct.due_at;
   `;
 
-  const { rows } = await db.query<CareTasksType>(SQL, [userId]);
+  const { rows } = await db.query<
+    CareTasksType & { task_type: string; nickname: string; photo_url: string }
+  >(SQL, [userId]);
 
-  if (rows.length === 0) {
-    return [];
-  }
-
+  // rows may be empty; return as-is
   return rows;
 };
