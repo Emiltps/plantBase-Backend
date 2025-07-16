@@ -44,7 +44,8 @@ export const fetchPlantById = (plant_id: string) => {
         created_at,
         died_at
         FROM plants
-        WHERE plant_id = $1`,
+        WHERE plant_id = $1
+        ORDER BY created_at DESC;`,
       [plant_id]
     )
     .then(({ rows }) => {
