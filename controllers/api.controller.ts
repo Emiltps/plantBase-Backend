@@ -220,7 +220,9 @@ export const deleteCareScheduleByCareScheduleId: RequestHandler = (
 
 //PATCH /care_tasks/:care_task_id/complete_at
 export const patchCareTaskCompletedAt: RequestHandler = (req, res, next) => {
-  const care_task_id = Number(req.params.care_tasks_id);
+  // Support both :id and :care_tasks_id route parameters
+  const idParam = req.params.care_tasks_id ?? req.params.id;
+  const care_task_id = Number(idParam);
   if (isNaN(care_task_id)) {
     res.status(400).json({ msg: "Invalid care task ID" });
     return;
@@ -237,8 +239,8 @@ export const patchCareTaskCompletedAt: RequestHandler = (req, res, next) => {
           next_due: newNextDue,
         }).then((updatedSchedule) => {
           res.status(200).json({
-            care_task: updatedTask,
-            care_schedule: updatedSchedule,
+            task: updatedTask,
+            schedule: updatedSchedule,
           });
         });
       });
