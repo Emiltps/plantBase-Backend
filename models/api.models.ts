@@ -18,7 +18,8 @@ export const fetchPlants = () => {
         status,
         created_at,
         died_at
-        FROM plants;`
+        FROM plants
+        ORDER BY created_at DESC;`
     )
     .then(({ rows }) => {
       if (!rows.length) {
