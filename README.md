@@ -114,5 +114,5 @@ npm test
 Interactive API docs are available at:  
 https://plantbase-be.onrender.com/
 
-Frontend:
+Frontend:  
 https://github.com/Emiltps/plantBase-Frontend
